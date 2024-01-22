@@ -7,7 +7,7 @@ var rootPath     = "./";
 var srcPath      = rootPath + "src/";
 var contractPath = rootPath + "contract/";
 var testPath     = rootPath + "test/";
-var solution     = rootPath + "AetherLink.Oracle.sln";
+var solution     = rootPath + "AetherLink.Contracts.sln";
 var srcProjects  = GetFiles(srcPath + "**/*.csproj");
 var contractProjects  = GetFiles(contractPath + "**/*.csproj");
 Task("Clean")
