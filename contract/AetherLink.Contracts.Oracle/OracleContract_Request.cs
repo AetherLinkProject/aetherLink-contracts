@@ -59,9 +59,13 @@ public partial class OracleContract
         CheckCoordinatorContractPermission(input.RequestTypeIndex);
         ValidateStartRequestInput(input);
 
+        var requestId = input.RequestId;
+        Assert(State.RequestStartedAdminMap[requestId] == null, $"Request {requestId} is started.");
+        State.RequestStartedAdminMap[requestId] = Context.Origin;
+
         Context.Fire(new RequestStarted
         {
-            RequestId = input.RequestId,
+            RequestId = requestId,
             RequestingContract = input.RequestingContract,
             RequestingInitiator = Context.Origin,
             SubscriptionId = input.SubscriptionId,
@@ -204,7 +208,6 @@ public partial class OracleContract
     {
         CheckInitialized();
         CheckUnpause();
-        CheckAdminPermission();
         ValidateCancelRequestInput(input);
 
         var subscription = State.Subscriptions[input.SubscriptionId];
@@ -217,15 +220,15 @@ public partial class OracleContract
         Assert(coordinator != null, "Coordinator not found.");
         Assert(coordinator.Status, "Coordinator not available.");
 
+        var requestAdmin = State.RequestStartedAdminMap[input.RequestId];
+        Assert(requestAdmin != null && requestAdmin == Context.Origin, "No permission.");
+
         Context.SendInline(coordinator.CoordinatorContractAddress,
             nameof(CoordinatorInterfaceContainer.CoordinatorInterfaceReferenceState.DeleteCommitment), input.RequestId);
 
         consumer.CompletedRequests = consumer.CompletedRequests.Add(1);
 
-        Context.Fire(new RequestCancelled
-        {
-            RequestId = input.RequestId
-        });
+        Context.Fire(new RequestCancelled { RequestId = input.RequestId });
 
         return new Empty();
     }

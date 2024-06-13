@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>AetherLink.Contracts.Automation.Upkeep</RootNamespace>
+        <IsContract>true</IsContract>
+        <PackageId>AetherLink.Contracts.Automation.Upkeep</PackageId>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Description>Automation Upkeep Contract</Description>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <ItemGroup>
+        <ContractBase Include="..\..\protobuf\acs12.proto">
+            <Link>Protobuf\Proto\reference\acs12.proto</Link>
+        </ContractBase>
+        <ContractBase Include="..\..\protobuf\upkeep_interface.proto">
+            <Link>Protobuf\Proto\upkeep_interface.proto</Link>
+        </ContractBase>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ContractCode Include="..\..\protobuf\automation_upkeep.proto">
+            <Link>Protobuf\Proto\automation_upkeep.proto</Link>
+        </ContractCode>
+        <ContractReference Include="..\..\protobuf\automation_contract.proto">
+            <Link>Protobuf\Proto\automation_contract.proto</Link>
+        </ContractReference>
+        <ContractReference Include="..\..\protobuf\acs0.proto">
+            <Link>Protobuf\Proto\acs0.proto</Link>
+        </ContractReference>
+    </ItemGroup>
+</Project>

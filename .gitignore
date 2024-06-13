@@ -307,3 +307,5 @@ src/AElf.Boilerplate.AetherLink.Launcher
 
 tools
 .dotnet
+
+*.dll
