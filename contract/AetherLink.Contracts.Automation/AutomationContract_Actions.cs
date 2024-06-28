@@ -35,7 +35,7 @@ public partial class AutomationContract
             SubscriptionOwner = Context.Sender,
             RequestingContract = Context.Sender,
             RequestTypeIndex = State.RequestTypeIndex.Value,
-            SubscriptionId = State.AutomationCurrentVersion.Value,
+            SubscriptionId = State.SubscriptionId.Value,
             Commitment = new Commitment
             {
                 RequestId = upkeepId,
@@ -44,7 +44,7 @@ public partial class AutomationContract
                 Coordinator = Context.Self,
                 SpecificData = input.ToByteString(),
                 RequestTypeIndex = State.RequestTypeIndex.Value,
-                SubscriptionId = State.AutomationCurrentVersion.Value,
+                SubscriptionId = State.SubscriptionId.Value,
                 TimeoutTimestamp = Context.CurrentBlockTime.AddSeconds(State.Config.Value.RequestTimeoutSeconds)
             }.ToByteString()
         });
@@ -69,7 +69,7 @@ public partial class AutomationContract
         State.OracleContract.CancelRequest.Send(new CancelRequestInput
         {
             RequestId = upkeepId,
-            SubscriptionId = State.AutomationCurrentVersion.Value,
+            SubscriptionId = State.SubscriptionId.Value,
             Consumer = Context.Self,
             RequestTypeIndex = State.RequestTypeIndex.Value
         });

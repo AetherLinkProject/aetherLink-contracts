@@ -25,7 +25,7 @@ public partial class AutomationContract : AutomationContractContainer.Automation
             { RequestTimeoutSeconds = AutomationContractConstants.DefaultRequestTimeoutSeconds };
 
         State.RequestTypeIndex.Value = input.AutomationTypeIndex;
-        State.AutomationCurrentVersion.Value = input.AutomationCurrentVersion;
+        State.SubscriptionId.Value = input.SubscriptionId;
         State.Initialized.Value = true;
 
         return new Empty();
@@ -69,10 +69,22 @@ public partial class AutomationContract : AutomationContractContainer.Automation
     {
         CheckAdminPermission();
         Assert(input != null && input.Value > 0, "Invalid input.");
-        
+
         State.RequestTypeIndex.Value = input.Value;
 
         Context.Fire(new RequestTypeIndexSet { RequestTypeIndex = input.Value });
+
+        return new Empty();
+    }
+
+    public override Empty SetSubscriptionId(Int32Value input)
+    {
+        CheckAdminPermission();
+        Assert(input != null && input.Value > 0, "Invalid input.");
+
+        State.SubscriptionId.Value = input.Value;
+
+        Context.Fire(new SubscriptionIdSet { SubscriptionId = input.Value });
 
         return new Empty();
     }
