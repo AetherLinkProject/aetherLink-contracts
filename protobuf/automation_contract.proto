@@ -33,6 +33,7 @@ service AutomationContract {
     // Config
     rpc SetOracleContractAddress (aelf.Address) returns (google.protobuf.Empty) {}
     rpc SetRequestTypeIndex(google.protobuf.Int32Value) returns (google.protobuf.Empty) {}
+    rpc SetSubscriptionId(google.protobuf.Int32Value) returns (google.protobuf.Empty) {}
     
     rpc Report (ReportInput) returns (google.protobuf.Empty) {}
     rpc DeleteCommitment (aelf.Hash) returns (google.protobuf.Empty) {}
@@ -49,7 +50,7 @@ message InitializeInput {
     aelf.Address admin = 1;
     int32 automation_type_index = 2;
     aelf.Address oracle = 3;
-    int64 automation_current_version = 4;
+    int64 subscription_id = 4;
 }
 
 message RegisterUpkeepInput {
@@ -91,6 +92,11 @@ message Config {
 message RequestTypeIndexSet {
   option (aelf.is_event) = true;
   int32 request_type_index = 1;
+}
+
+message SubscriptionIdSet {
+  option (aelf.is_event) = true;
+  int32 subscription_id = 1;
 }
 
 message UpkeepRemoved {
