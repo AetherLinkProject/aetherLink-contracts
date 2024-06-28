@@ -23,6 +23,7 @@ public partial class OracleContractState : ContractState
     public MappedState<int, Coordinator> Coordinators { get; set; }
     public SingletonState<SubscriptionConfig> SubscriptionConfig { get; set; }
     public SingletonState<int> CurrentRequestTypeIndex { get; set; }
+    public MappedState<Hash, Address> RequestStartedAdminMap { get; set; }
 
     // public key
     public MappedState<Hash, Address> ProvingKeyOraclesMap { get; set; }
