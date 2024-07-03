@@ -120,6 +120,7 @@ public partial class DataFeedsCoordinatorContract
             TimeoutTimestamp = timeoutTimestamp,
             RequestId = requestId,
             SpecificData = request.SpecificData,
+            TraceId = request.TraceId,
             RequestTypeIndex = State.RequestTypeIndex.Value
         };
 

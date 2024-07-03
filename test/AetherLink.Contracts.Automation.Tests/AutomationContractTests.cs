@@ -42,7 +42,7 @@ public partial class AutomationContractTests : AutomationContractTestBase
             Admin = new Address(),
             AutomationTypeIndex = 3,
             Oracle = OracleContractAddress,
-            AutomationCurrentVersion = 0
+            SubscriptionId = 0
         });
         result.TransactionResult.Error.ShouldContain("Invalid input admin.");
 
@@ -52,7 +52,7 @@ public partial class AutomationContractTests : AutomationContractTestBase
             Admin = UserAddress,
             AutomationTypeIndex = 3,
             Oracle = OracleContractAddress,
-            AutomationCurrentVersion = 0
+            SubscriptionId = 0
         });
         result.TransactionResult.Error.ShouldContain("No permission.");
     }
@@ -166,7 +166,7 @@ public partial class AutomationContractTests : AutomationContractTestBase
         Admin = DefaultAddress,
         AutomationTypeIndex = 3,
         Oracle = OracleContractAddress,
-        AutomationCurrentVersion = 0
+        SubscriptionId = 0
     });
 
     private T GetLogEvent<T>(TransactionResult transactionResult) where T : IEvent<T>, new()
@@ -229,7 +229,7 @@ public partial class AutomationContractTests : AutomationContractTestBase
                 Admin = DefaultAddress,
                 AutomationTypeIndex = requestTypeIndex,
                 Oracle = OracleContractAddress,
-                AutomationCurrentVersion = 1
+                SubscriptionId = 1
             });
             result.TransactionResult.Status.ShouldBe(TransactionResultStatus.Mined);
         }

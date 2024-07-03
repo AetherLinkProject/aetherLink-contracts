@@ -38,7 +38,8 @@ public partial class OracleContract
                 SubscriptionOwner = subscription.Owner,
                 InitiatedRequests = consumer.InitiatedRequests,
                 CompletedRequests = consumer.CompletedRequests,
-                SpecificData = input.SpecificData
+                SpecificData = input.SpecificData,
+                TraceId = input.TraceId
             }.ToByteString());
 
         Context.Fire(new OracleRequestSent
@@ -106,6 +107,7 @@ public partial class OracleContract
                 RequestId = commitment.RequestId,
                 Response = input.Response,
                 Err = input.Err,
+                TraceId = commitment.TraceId,
                 RequestTypeIndex = coordinator.RequestTypeIndex
             });
 
