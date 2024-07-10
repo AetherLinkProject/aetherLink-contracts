@@ -98,6 +98,7 @@ public partial class VrfCoordinatorContract
         Assert(input.InitiatedRequests >= 0, "Invalid input initiated requests.");
         Assert(input.CompletedRequests >= 0, "Invalid input completed requests.");
         Assert(IsAddressValid(input.SubscriptionOwner), "Invalid input subscription owner.");
+        Assert(IsHashValid(input.TraceId), "Invalid input TraceId.");
     }
 
     private Commitment StartRequest(Request request, Address oracle)
@@ -118,6 +119,7 @@ public partial class VrfCoordinatorContract
             SubscriptionId = request.SubscriptionId,
             Nonce = currentNonce,
             TimeoutTimestamp = timeoutTimestamp,
+            TraceId = request.TraceId,
             RequestInitiator = Context.Origin
         });
 
@@ -135,6 +137,7 @@ public partial class VrfCoordinatorContract
             TimeoutTimestamp = timeoutTimestamp,
             RequestId = requestId,
             SpecificData = specificData.ToByteString(),
+            TraceId = request.TraceId,
             RequestTypeIndex = State.RequestTypeIndex.Value
         };
 

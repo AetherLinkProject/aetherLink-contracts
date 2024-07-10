@@ -204,6 +204,7 @@ public partial class OracleContract
         Assert(input != null, "Invalid input.");
         Assert(input.SubscriptionId > 0, "Invalid subscription id.");
         Assert(input.RequestTypeIndex > 0, "Invalid request type index.");
+        Assert(IsHashValid(input.TraceId), "Invalid request trace id.");
     }
 
     public override Empty CancelRequest(CancelRequestInput input)

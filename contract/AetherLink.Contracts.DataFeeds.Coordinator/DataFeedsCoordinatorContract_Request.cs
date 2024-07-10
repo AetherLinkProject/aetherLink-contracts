@@ -96,6 +96,7 @@ public partial class DataFeedsCoordinatorContract
         Assert(input.InitiatedRequests >= 0, "Invalid input initiated requests.");
         Assert(input.CompletedRequests >= 0, "Invalid input completed requests.");
         Assert(IsAddressValid(input.SubscriptionOwner), "Invalid input subscription owner.");
+        Assert(IsHashValid(input.TraceId), "Invalid input TraceId.");
     }
 
     private Commitment StartRequest(Request request, Address oracle)
@@ -109,6 +110,7 @@ public partial class DataFeedsCoordinatorContract
             SubscriptionId = request.SubscriptionId,
             Nonce = request.InitiatedRequests,
             TimeoutTimestamp = timeoutTimestamp,
+            TraceId = request.TraceId,
             RequestInitiator = Context.Origin
         });
 
