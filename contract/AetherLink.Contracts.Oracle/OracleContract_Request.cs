@@ -1,6 +1,7 @@
 using AElf;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
+using AElf.Types;
 using AetherLink.Contracts.Consumer;
 using Coordinator;
 using Google.Protobuf;
@@ -39,7 +40,7 @@ public partial class OracleContract
                 InitiatedRequests = consumer.InitiatedRequests,
                 CompletedRequests = consumer.CompletedRequests,
                 SpecificData = input.SpecificData,
-                TraceId = input.TraceId
+                TraceId = input.TraceId ?? Hash.Empty
             }.ToByteString());
 
         Context.Fire(new OracleRequestSent
@@ -204,7 +205,6 @@ public partial class OracleContract
         Assert(input != null, "Invalid input.");
         Assert(input.SubscriptionId > 0, "Invalid subscription id.");
         Assert(input.RequestTypeIndex > 0, "Invalid request type index.");
-        Assert(IsHashValid(input.TraceId), "Invalid request trace id.");
     }
 
     public override Empty CancelRequest(CancelRequestInput input)
@@ -224,7 +224,7 @@ public partial class OracleContract
         Assert(coordinator.Status, "Coordinator not available.");
 
         var requestAdmin = State.RequestStartedAdminMap[input.RequestId];
-        Assert(requestAdmin != null && requestAdmin == Context.Origin, "No permission.");
+        Assert(requestAdmin != null && requestAdmin == Context.Origin, "No cancel permission.");
 
         Context.SendInline(coordinator.CoordinatorContractAddress,
             nameof(CoordinatorInterfaceContainer.CoordinatorInterfaceReferenceState.DeleteCommitment), input.RequestId);

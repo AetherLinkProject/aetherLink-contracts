@@ -12,8 +12,8 @@ public partial class AutomationContract
     private bool IsHashValid(Hash input) => input != null && !input.Value.IsNullOrEmpty();
 
     private void CheckOracleContractPermission() =>
-        Assert(Context.Sender == State.OracleContract.Value, "No permission.");
+        Assert(Context.Sender == State.OracleContract.Value, "Only OracleContract has permission.");
 
     private void CheckUpkeepAdminPermission(Hash upkeepId) =>
-        Assert(Context.Sender == State.RegisteredUpkeepMap[upkeepId].AdminAddress, "No permission.");
+        Assert(Context.Sender == State.RegisteredUpkeepMap[upkeepId].AdminAddress, "Not upkeep admin.");
 }

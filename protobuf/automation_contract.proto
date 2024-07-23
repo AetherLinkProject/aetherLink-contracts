@@ -24,6 +24,7 @@ service AutomationContract {
     
     rpc RegisterUpkeep(RegisterUpkeepInput) returns (google.protobuf.Empty) {}
     rpc DeregisterUpkeep(aelf.Hash) returns (google.protobuf.Empty) {}
+    rpc GetUpkeepInfo(aelf.Hash) returns (UpkeepInfo) { option (aelf.is_view) = true; }
     
     // Admin
     rpc Initialize(InitializeInput) returns (google.protobuf.Empty) {}

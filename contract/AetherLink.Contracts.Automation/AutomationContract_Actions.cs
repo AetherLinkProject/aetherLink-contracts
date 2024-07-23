@@ -23,7 +23,6 @@ public partial class AutomationContract
         State.RegisteredUpkeepMap[upkeepId] = new UpkeepInfo
         {
             Name = input.Name,
-            // UpkeepId = upkeepId,
             TriggerType = input.TriggerType,
             AdminAddress = input.AdminAddress,
             UpkeepContract = input.UpkeepContract
@@ -77,6 +76,12 @@ public partial class AutomationContract
         return new Empty();
     }
 
+    public override UpkeepInfo GetUpkeepInfo(Hash upkeepId)
+    {
+        Assert(State.RegisteredUpkeepMap[upkeepId] != null, $"Upkeep {upkeepId} not exist.");
+        return State.RegisteredUpkeepMap[upkeepId];
+    }
+
     public override Empty DeleteCommitment(Hash upkeepId)
     {
         CheckInitialized();
@@ -116,17 +121,6 @@ public partial class AutomationContract
         Context.SendInline(State.RegisteredUpkeepMap[upkeepId].UpkeepContract,
             nameof(UpkeepInterfaceContainer.UpkeepInterfaceReferenceState.PerformUpkeep),
             new PerformUpkeepInput { PerformData = originData.PerformData });
-
-        switch (originData.TriggerType)
-        {
-            case TriggerType.Log:
-                State.RegisteredUpkeepMap.Remove(upkeepId);
-                Context.Fire(new UpkeepRemoved { UpkeepId = upkeepId });
-                break;
-            case TriggerType.Cron:
-            default:
-                break;
-        }
 
         Context.Fire(new UpkeepPerformed { UpkeepId = upkeepId });
 

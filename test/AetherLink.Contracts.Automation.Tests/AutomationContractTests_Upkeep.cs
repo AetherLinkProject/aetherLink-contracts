@@ -124,12 +124,12 @@ public partial class AutomationContractTests
 
         {
             var result = await AutomationContractUser2Stub.DeregisterUpkeep.SendWithExceptionAsync(upkeepId);
-            result.TransactionResult.Error.ShouldContain("No permission.");
+            result.TransactionResult.Error.ShouldContain("Not upkeep admin.");
         }
 
         {
             var result = await AutomationContractUser2Stub.DeleteCommitment.SendWithExceptionAsync(upkeepId);
-            result.TransactionResult.Error.ShouldContain("No permission.");
+            result.TransactionResult.Error.ShouldContain("Only OracleContract has permission.");
         }
     }
 
@@ -145,7 +145,7 @@ public partial class AutomationContractTests
 
         {
             var result = await AutomationContractUserStub.Report.SendWithExceptionAsync(new ReportInput());
-            result.TransactionResult.Error.ShouldContain("No permission.");
+            result.TransactionResult.Error.ShouldContain("Only OracleContract has permission.");
         }
 
         var registerUpkeepInput = new RegisterUpkeepInput
