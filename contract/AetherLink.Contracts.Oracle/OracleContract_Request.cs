@@ -61,9 +61,13 @@ public partial class OracleContract
         CheckCoordinatorContractPermission(input.RequestTypeIndex);
         ValidateStartRequestInput(input);
 
+        var requestId = input.RequestId;
+        Assert(State.RequestStartedAdminMap[requestId] == null, $"Request {requestId} is started.");
+        State.RequestStartedAdminMap[requestId] = Context.Origin;
+
         Context.Fire(new RequestStarted
         {
-            RequestId = input.RequestId,
+            RequestId = requestId,
             RequestingContract = input.RequestingContract,
             RequestingInitiator = Context.Origin,
             SubscriptionId = input.SubscriptionId,
