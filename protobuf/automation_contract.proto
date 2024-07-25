@@ -116,3 +116,13 @@ message UpkeepPerformed {
   option (aelf.is_event) = true;
   aelf.Hash upkeep_id = 1;
 }
+
+message LogTriggerCheckData {
+  string chain_id = 1;
+  string transaction_id = 2;
+  int64 block_height = 3;
+  string block_hash = 4;
+  string contractAddress = 5;
+  string event_name = 6;
+  int32 index = 7;
+}
