@@ -100,12 +100,11 @@ public partial class AutomationContract
 
     public override Empty Report(ReportInput input)
     {
-        Assert(input != null, "Invalid input.");
-
         CheckInitialized();
         CheckUnpause();
         CheckOracleContractPermission();
 
+        Assert(input != null, "Invalid input.");
         Assert(!input.Report.IsNullOrEmpty(), "Invalid input report.");
         var report = global::Oracle.Report.Parser.ParseFrom(input.Report);
 
@@ -114,13 +113,13 @@ public partial class AutomationContract
         Assert(IsHashValid(meta.RequestId), "Invalid commitment request id.");
 
         var upkeepId = meta.RequestId;
-        Assert(State.RegisteredUpkeepMap[upkeepId] != null, "Not exist upkeep.");
+        var upkeepInfo = State.RegisteredUpkeepMap[upkeepId];
+        Assert(upkeepInfo != null, "Not exist upkeep.");
         VerifyThresholdSignature(input);
 
-        var originData = RegisterUpkeepInput.Parser.ParseFrom(meta.SpecificData);
-        Context.SendInline(State.RegisteredUpkeepMap[upkeepId].UpkeepContract,
+        Context.SendInline(upkeepInfo.UpkeepContract,
             nameof(UpkeepInterfaceContainer.UpkeepInterfaceReferenceState.PerformUpkeep),
-            new PerformUpkeepInput { PerformData = originData.PerformData });
+            new PerformUpkeepInput { PerformData = report.Result });
 
         Context.Fire(new UpkeepPerformed { UpkeepId = upkeepId });
 
