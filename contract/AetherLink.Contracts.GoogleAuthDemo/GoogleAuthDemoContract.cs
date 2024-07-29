@@ -22,7 +22,8 @@ public partial class GoogleAuthDemoContract : GoogleAuthDemoContractContainer.Go
         {
             SubscriptionId = input.SubscriptionId,
             RequestTypeIndex = input.RequestTypeIndex,
-            SpecificData = input.SpecificData
+            SpecificData = input.SpecificData,
+            TraceId = input.TraceId
         });
 
         return new Empty();
@@ -32,7 +33,7 @@ public partial class GoogleAuthDemoContract : GoogleAuthDemoContractContainer.Go
     {
         var round = State.LatestRound.Value.Add(1);
 
-        State.FulfillData[input.RequestId] = new GoogleRoundData
+        State.FulfillData[input.TraceId] = new GoogleRoundData
         {
             Data = input.Response,
             RoundId = round,
