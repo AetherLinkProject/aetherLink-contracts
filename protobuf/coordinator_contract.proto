@@ -56,6 +56,7 @@ message Request {
   int64 completed_requests = 4;
   aelf.Address subscription_owner = 5;
   bytes specific_data = 6;
+  aelf.Hash trace_id = 7;
 }
 
 message RequestInfo {
@@ -65,6 +66,7 @@ message RequestInfo {
   int64 nonce = 4;
   google.protobuf.Timestamp timeout_timestamp = 5;
   aelf.Address request_initiator = 6;
+  aelf.Hash trace_id = 7;
 }
 
 message ReportInput {
