@@ -151,6 +151,7 @@ public partial class ConsumerContract : ConsumerContractContainer.ConsumerContra
         {
             SubscriptionId = input.SubscriptionId,
             RequestTypeIndex = input.RequestTypeIndex,
+            TraceId = input.TraceId,
             SpecificData = input.SpecificData
         });
 
