@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>AetherLink.Contracts.AIFeeds</RootNamespace>
+        <IsContract>true</IsContract>
+        <PackageId>AetherLink.Contracts.AIFeeds</PackageId>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Description>AIFeeds Contract</Description>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <ItemGroup>
+        <ContractReference Include="..\..\protobuf\acs0.proto">
+            <Link>Protobuf\Proto\acs0.proto</Link>
+        </ContractReference>
+    </ItemGroup>
+    <ItemGroup>
+        <ContractBase Include="..\..\protobuf\acs12.proto">
+            <Link>Protobuf\Proto\reference\acs12.proto</Link>
+        </ContractBase>
+        <ContractReference Include="..\..\protobuf\ai_request_interface.proto">
+            <Link>Protobuf\Proto\ai_request_interface.proto</Link>
+        </ContractReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ContractCode Include="..\..\protobuf\ai_feeds_contract.proto">
+            <Link>Protobuf\Proto\ai_feeds_contract.proto</Link>
+        </ContractCode>
+        <!--        <ContractReference Include="..\..\protobuf\upkeep_interface.proto">-->
+        <!--            <Link>Protobuf\Proto\upkeep_interface.proto</Link>-->
+        <!--        </ContractReference>-->
+    </ItemGroup>
+
+    <!--<ItemGroup>-->
+    <!--    <CommonMessage Include="..\..\protobuf\oracle_common_message.proto">-->
+    <!--        <Link>Protobuf\Proto\oracle_common_message.proto</Link>-->
+    <!--    </CommonMessage>-->
+    <!--    <ContractReference Include="..\..\protobuf\oracle_contract.proto">-->
+    <!--        <Link>Protobuf\Proto\oracle_contract.proto</Link>-->
+    <!--    </ContractReference>-->
+    <!--</ItemGroup>-->
+</Project>

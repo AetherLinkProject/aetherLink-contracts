@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AetherLink.Contracts.Automa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AetherLink.Contracts.Automation.Upkeep", "contract\AetherLink.Contracts.Automation.Upkeep\AetherLink.Contracts.Automation.Upkeep.csproj", "{A3A44261-30E1-4E3B-BD58-D668054DADED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AetherLink.Contracts.AIFeeds", "contract\AetherLink.Contracts.AIFeeds\AetherLink.Contracts.AIFeeds.csproj", "{BCA86D60-EA57-44D8-A258-C02AE3AE0DDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{A3A44261-30E1-4E3B-BD58-D668054DADED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3A44261-30E1-4E3B-BD58-D668054DADED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3A44261-30E1-4E3B-BD58-D668054DADED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA86D60-EA57-44D8-A258-C02AE3AE0DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA86D60-EA57-44D8-A258-C02AE3AE0DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA86D60-EA57-44D8-A258-C02AE3AE0DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA86D60-EA57-44D8-A258-C02AE3AE0DDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{A7336AA7-7771-457A-BECA-A7566CF8A66B} = {83F5DA0A-BC4D-4B34-859D-EB0E3FE0AD2A}
 		{9F61D0F1-B3ED-4DAC-B456-A4C2BBDC39BA} = {DBC47323-E6A2-42A2-A624-CE2EE6139567}
 		{A3A44261-30E1-4E3B-BD58-D668054DADED} = {83F5DA0A-BC4D-4B34-859D-EB0E3FE0AD2A}
+		{BCA86D60-EA57-44D8-A258-C02AE3AE0DDE} = {83F5DA0A-BC4D-4B34-859D-EB0E3FE0AD2A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7426B41-E959-40E4-9ED8-ED8D9C50F133}

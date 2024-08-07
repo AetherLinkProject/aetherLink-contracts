@@ -1,0 +1,109 @@
+// the version of the language, use proto3 for contracts
+syntax = "proto3";
+
+package ai;
+
+// some core imports for AElf chain types
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "acs12.proto";
+
+// import for using the google.protobuf.* type.
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "AetherLink.Contracts.AIFeeds";
+
+service AIFeedsContract {
+    option (aelf.base) = "acs12.proto";
+    option (aelf.csharp_state) = "AetherLink.Contracts.AIFeeds.AIFeedsContractState";
+    
+    // Admin
+    rpc Initialize(InitializeInput) returns (google.protobuf.Empty) {}
+    rpc GetAdmin (google.protobuf.Empty) returns (aelf.Address) { option (aelf.is_view) = true; }
+    rpc SetConfig (AIOracleConfig) returns (google.protobuf.Empty) {}
+    rpc GetConfig (google.protobuf.Empty) returns (AIOracleConfig) { option (aelf.is_view) = true; }
+    
+    // Request
+    rpc StartAIRequest(StartAIRequestInput) returns (google.protobuf.Empty) {}
+    rpc GetAIRequest (aelf.Hash) returns (AIRequest) { option (aelf.is_view) = true; }
+    rpc AIRequestTransmit (AIRequestTransmitInput) returns (google.protobuf.Empty) {}
+}
+
+message InitializeInput {
+    aelf.Address admin = 1;
+}
+
+message AIOracleConfig {
+    repeated aelf.Address enclaves = 1;
+    int64 ai_request_fees = 2; 
+}
+
+message StartAIRequestInput {
+    ModelType model = 1; 
+    aelf.Address admin = 2;
+    aelf.Address fulfill_address = 3;
+    aelf.Hash trace_id = 4;
+    Description description = 5;
+}
+
+message AIRequestTransmitInput {
+    OracleContext oracle_context = 1;
+    bytes report = 2;
+    bytes signature = 3;
+}
+
+message OracleContext {
+    aelf.Hash request_id = 1;
+}
+
+message AIRequest {
+    ModelType model = 1; 
+    aelf.Address admin = 2;
+    aelf.Address fulfill_address = 3;
+    aelf.Hash trace_id = 4;
+    Description description = 5;
+    AIRequestStatusType status = 6;
+}
+
+message Description {
+    DescriptionType type = 1;
+    bytes detail = 2;
+} 
+
+// log event
+message RequestStarted {
+    option (aelf.is_event) = true;
+    aelf.Hash request_id = 1;
+    bytes commitment = 2;
+}
+
+message AIReportTransmitted {
+  option (aelf.is_event) = true;
+  aelf.Hash request_id = 1;
+  aelf.Address transmitter = 2;
+  aelf.Address enclave = 3;
+}
+
+message AIOracleConfigSet {
+  option (aelf.is_event) = true;
+  AIOracleConfig config = 1;
+}
+
+// enum
+
+enum ModelType {
+    ChatGpt = 0;
+}
+
+enum DescriptionType {
+    String = 0;
+}
+
+enum AIRequestStatusType {
+    Started = 0;
+    Processing = 1;
+    Finished = 2;
+}
+
