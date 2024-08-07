@@ -1,0 +1,44 @@
+// the version of the language, use proto3 for contracts
+syntax = "proto3";
+
+package ai;
+
+// some core imports for AElf chain types
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "ai_request_interface.proto";
+
+// import for using the google.protobuf.* type.
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "AetherLink.Contracts.AIFeeds.Demo";
+
+service AIFeedsDemoContract {
+    option (aelf.base) = "ai_request_interface.proto";
+    option (aelf.csharp_state) = "AetherLink.Contracts.AIFeeds.Demo.AIFeedsDemoContractState";
+    
+    rpc Initialize(InitializeInput) returns (google.protobuf.Empty) {}
+    rpc StartAIRequest(StartAIRequestInput) returns (google.protobuf.Empty) {}
+    rpc GetAIResult(aelf.Hash) returns (ChatGptResult) {}    
+}
+
+message InitializeInput {
+    aelf.Address admin = 1;
+    aelf.Address ai_oracle = 2;
+}
+
+message StartAIRequestInput {
+    string name = 1;
+    bytes description = 2;
+}
+
+message AIRequestInfo {
+    string name = 1;
+    ChatGptResult result = 2;
+}
+
+message ChatGptResult {
+
+}
