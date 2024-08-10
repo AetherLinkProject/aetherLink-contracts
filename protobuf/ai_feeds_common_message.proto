@@ -17,5 +17,5 @@ import "google/protobuf/timestamp.proto";
 
 message ChatGptResponse {
     string model = 1;
-    bytes context = 2;
+    bytes content = 2;
 }
