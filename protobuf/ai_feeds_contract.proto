@@ -55,7 +55,8 @@ message AIRequestTransmitInput {
 }
 
 message OracleContext {
-    aelf.Hash request_id = 1;
+    int32 chain_id = 1;
+    aelf.Hash request_id = 2;
 }
 
 message AIRequest {
