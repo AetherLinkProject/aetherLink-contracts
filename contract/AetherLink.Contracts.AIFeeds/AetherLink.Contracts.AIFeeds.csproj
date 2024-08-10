@@ -31,17 +31,10 @@
         <ContractCode Include="..\..\protobuf\ai_feeds_contract.proto">
             <Link>Protobuf\Proto\ai_feeds_contract.proto</Link>
         </ContractCode>
-        <!--        <ContractReference Include="..\..\protobuf\upkeep_interface.proto">-->
-        <!--            <Link>Protobuf\Proto\upkeep_interface.proto</Link>-->
-        <!--        </ContractReference>-->
     </ItemGroup>
-
-    <!--<ItemGroup>-->
-    <!--    <CommonMessage Include="..\..\protobuf\oracle_common_message.proto">-->
-    <!--        <Link>Protobuf\Proto\oracle_common_message.proto</Link>-->
-    <!--    </CommonMessage>-->
-    <!--    <ContractReference Include="..\..\protobuf\oracle_contract.proto">-->
-    <!--        <Link>Protobuf\Proto\oracle_contract.proto</Link>-->
-    <!--    </ContractReference>-->
-    <!--</ItemGroup>-->
+    <ItemGroup>
+        <CommonMessage Include="..\..\protobuf\ai_feeds_common_message.proto">
+            <Link>Protobuf\Proto\ai_feeds_common_message.proto</Link>
+        </CommonMessage>
+    </ItemGroup>
 </Project>

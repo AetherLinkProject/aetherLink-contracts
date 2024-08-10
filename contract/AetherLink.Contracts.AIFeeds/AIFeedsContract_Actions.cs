@@ -30,7 +30,7 @@ public partial class AIFeedsContract
         Context.Fire(new RequestStarted
         {
             RequestId = requestId,
-            Commitment = request.Description.ToByteString()
+            Commitment = request.ToByteString()
         });
 
         return new Empty();
