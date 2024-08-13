@@ -7,6 +7,7 @@ package ai;
 import "aelf/core.proto";
 import "aelf/options.proto";
 import "ai_request_interface.proto";
+import "ai_feeds_common_message.proto";
 
 // import for using the google.protobuf.* type.
 import "google/protobuf/empty.proto";
@@ -21,7 +22,7 @@ service AIFeedsDemoContract {
     
     rpc Initialize(InitializeInput) returns (google.protobuf.Empty) {}
     rpc StartAIRequest(StartAIRequestInput) returns (google.protobuf.Empty) {}
-    rpc GetAIResult(aelf.Hash) returns (ChatGptResult) {}    
+    rpc GetAIResult(aelf.Hash) returns (ai.ChatGptResponse) {}    
 }
 
 message InitializeInput {
@@ -36,9 +37,11 @@ message StartAIRequestInput {
 
 message AIRequestInfo {
     string name = 1;
-    ChatGptResult result = 2;
+    ai.ChatGptResponse result = 2;
 }
 
-message ChatGptResult {
-
+message AIRequestStarted {
+    option (aelf.is_event) = true;
+    aelf.Hash trace_id = 1;
+    string name = 2;    
 }

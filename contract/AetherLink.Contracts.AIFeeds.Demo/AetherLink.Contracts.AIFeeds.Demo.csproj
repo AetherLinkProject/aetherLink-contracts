@@ -38,4 +38,9 @@
             <Link>Protobuf\Proto\ai_feeds_contract.proto</Link>
         </ContractReference>
     </ItemGroup>
+    <ItemGroup>
+        <CommonMessage Include="..\..\protobuf\ai_feeds_common_message.proto">
+            <Link>Protobuf\Proto\ai_feeds_common_message.proto</Link>
+        </CommonMessage>
+    </ItemGroup>
 </Project>
