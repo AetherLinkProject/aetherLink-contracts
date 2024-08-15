@@ -54,7 +54,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\contract\AetherLink.Contracts.Automation.Upkeep\AetherLink.Contracts.Automation.Upkeep.csproj" />
         <ProjectReference Include="..\..\contract\AetherLink.Contracts.Oracle\AetherLink.Contracts.Oracle.csproj" />
         <ProjectReference Include="..\..\contract\AetherLink.Contracts.Automation\AetherLink.Contracts.Automation.csproj" />
         <ProjectReference Include="..\..\src\AElf.Boilerplate.MainChain\AElf.Boilerplate.MainChain.csproj" />
