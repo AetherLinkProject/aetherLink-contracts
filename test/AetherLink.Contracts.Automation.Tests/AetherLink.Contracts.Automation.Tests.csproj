@@ -39,9 +39,6 @@
         <ContractStub Include="..\..\protobuf\automation_contract.proto">
             <Link>Protobuf\Proto\automation_contract.proto</Link>
         </ContractStub>
-        <ContractStub Include="..\..\protobuf\automation_upkeep.proto">
-            <Link>Protobuf\Proto\automation_upkeep.proto</Link>
-        </ContractStub>
     </ItemGroup>
 
     <ItemGroup>
@@ -61,6 +58,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Protobuf\Generated" />
         <Folder Include="Protobuf\Generated\" />
     </ItemGroup>
 </Project>

@@ -7,7 +7,6 @@ using AElf.CSharp.Core;
 using AElf.Kernel;
 using AElf.Standards.ACS0;
 using AElf.Types;
-using AetherLink.Contracts.Automation.Upkeep;
 using AetherLink.Contracts.Oracle;
 using Google.Protobuf;
 using Volo.Abp.Threading;
@@ -25,7 +24,7 @@ public class AutomationContractTestBase : DAppContractTestBase<AutomationContrac
     internal AutomationContractContainer.AutomationContractStub AutomationContractUser2Stub { get; set; }
     internal ACS0Container.ACS0Stub ZeroContractStub { get; set; }
     internal OracleContractContainer.OracleContractStub OracleContractStub { get; set; }
-    internal UpkeepContractContainer.UpkeepContractStub UpkeepContractStub { get; set; }
+    // internal UpkeepContractContainer.UpkeepContractStub UpkeepContractStub { get; set; }
 
     protected ECKeyPair DefaultKeyPair => Accounts[0].KeyPair;
     protected Address DefaultAddress => Accounts[0].Address;
@@ -111,31 +110,31 @@ public class AutomationContractTestBase : DAppContractTestBase<AutomationContrac
         }
 
         // Upkeep
-        {
-            var code = ByteString.CopyFrom(File.ReadAllBytes(typeof(UpkeepContract).Assembly.Location));
-            var contractOperation = new ContractOperation
-            {
-                ChainId = 9992731,
-                CodeHash = HashHelper.ComputeFrom(code.ToByteArray()),
-                Deployer = DefaultAddress,
-                Salt = HashHelper.ComputeFrom("upkeep"),
-                Version = 1
-            };
-            contractOperation.Signature = GenerateContractSignature(DefaultKeyPair.PrivateKey, contractOperation);
-
-            var result = AsyncHelper.RunSync(async () => await ZeroContractStub.DeploySmartContract.SendAsync(
-                new ContractDeploymentInput
-                {
-                    Category = KernelConstants.CodeCoverageRunnerCategory,
-                    Code = code,
-                    ContractOperation = contractOperation
-                }));
-
-            UpkeepContractAddress = Address.Parser.ParseFrom(result.TransactionResult.ReturnValue);
-            UpkeepContractStub = GetTester<UpkeepContractContainer.UpkeepContractStub>(AutomationContractAddress,
-                DefaultKeyPair);
-            // AutomationContractUserStub = GetAutomationContractContainerStub(UserKeyPair);
-        }
+        // {
+        //     var code = ByteString.CopyFrom(File.ReadAllBytes(typeof(UpkeepContract).Assembly.Location));
+        //     var contractOperation = new ContractOperation
+        //     {
+        //         ChainId = 9992731,
+        //         CodeHash = HashHelper.ComputeFrom(code.ToByteArray()),
+        //         Deployer = DefaultAddress,
+        //         Salt = HashHelper.ComputeFrom("upkeep"),
+        //         Version = 1
+        //     };
+        //     contractOperation.Signature = GenerateContractSignature(DefaultKeyPair.PrivateKey, contractOperation);
+        //
+        //     var result = AsyncHelper.RunSync(async () => await ZeroContractStub.DeploySmartContract.SendAsync(
+        //         new ContractDeploymentInput
+        //         {
+        //             Category = KernelConstants.CodeCoverageRunnerCategory,
+        //             Code = code,
+        //             ContractOperation = contractOperation
+        //         }));
+        //
+        //     UpkeepContractAddress = Address.Parser.ParseFrom(result.TransactionResult.ReturnValue);
+        //     UpkeepContractStub = GetTester<UpkeepContractContainer.UpkeepContractStub>(AutomationContractAddress,
+        //         DefaultKeyPair);
+        //     // AutomationContractUserStub = GetAutomationContractContainerStub(UserKeyPair);
+        // }
     }
 
     internal AutomationContractContainer.AutomationContractStub GetAutomationContractContainerStub(ECKeyPair keyPair)
