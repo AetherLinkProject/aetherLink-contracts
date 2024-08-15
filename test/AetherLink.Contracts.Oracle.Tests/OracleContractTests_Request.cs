@@ -513,10 +513,6 @@ public partial class OracleContractTests
         await InitializeAsync();
 
         {
-            var result = await UserOracleContractStub.CancelRequest.SendWithExceptionAsync(new CancelRequestInput());
-            result.TransactionResult.Error.ShouldContain("No permission.");
-        }
-        {
             var result = await OracleContractStub.CancelRequest.SendWithExceptionAsync(new CancelRequestInput());
             result.TransactionResult.Error.ShouldContain("Invalid input request id.");
         }

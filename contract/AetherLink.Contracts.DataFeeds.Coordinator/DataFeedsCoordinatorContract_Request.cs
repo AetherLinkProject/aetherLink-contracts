@@ -109,6 +109,7 @@ public partial class DataFeedsCoordinatorContract
             SubscriptionId = request.SubscriptionId,
             Nonce = request.InitiatedRequests,
             TimeoutTimestamp = timeoutTimestamp,
+            TraceId = request.TraceId,
             RequestInitiator = Context.Origin
         });
 
@@ -120,6 +121,7 @@ public partial class DataFeedsCoordinatorContract
             TimeoutTimestamp = timeoutTimestamp,
             RequestId = requestId,
             SpecificData = request.SpecificData,
+            TraceId = request.TraceId,
             RequestTypeIndex = State.RequestTypeIndex.Value
         };
 

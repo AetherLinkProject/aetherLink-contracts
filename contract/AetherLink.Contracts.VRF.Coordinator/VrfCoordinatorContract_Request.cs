@@ -118,6 +118,7 @@ public partial class VrfCoordinatorContract
             SubscriptionId = request.SubscriptionId,
             Nonce = currentNonce,
             TimeoutTimestamp = timeoutTimestamp,
+            TraceId = request.TraceId,
             RequestInitiator = Context.Origin
         });
 
@@ -135,6 +136,7 @@ public partial class VrfCoordinatorContract
             TimeoutTimestamp = timeoutTimestamp,
             RequestId = requestId,
             SpecificData = specificData.ToByteString(),
+            TraceId = request.TraceId,
             RequestTypeIndex = State.RequestTypeIndex.Value
         };
 
