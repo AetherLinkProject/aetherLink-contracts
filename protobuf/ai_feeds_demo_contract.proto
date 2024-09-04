@@ -23,6 +23,9 @@ service AIFeedsDemoContract {
     rpc Initialize(InitializeInput) returns (google.protobuf.Empty) {}
     rpc StartAIRequest(StartAIRequestInput) returns (google.protobuf.Empty) {}
     rpc GetAIResult(aelf.Hash) returns (ai.ChatGptResponse) {}    
+    
+    rpc Adopt(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc GetInscription(aelf.Hash) returns (InscriptionInfo) { option (aelf.is_view) = true; }
 }
 
 message InitializeInput {
@@ -44,4 +47,28 @@ message AIRequestStarted {
     option (aelf.is_event) = true;
     aelf.Hash trace_id = 1;
     string name = 2;    
+}
+
+// logevent
+message Adopted {
+  option (aelf.is_event) = true;
+  aelf.Hash adopt_id = 1;
+  aelf.Address adopter = 2;
+  Attributes attributes = 3;
+  int64 block_height = 4;
+}
+
+message Attributes {
+  repeated Attribute attribute = 1;
+}
+
+message Attribute {
+  string trait_type = 1;
+  string value = 2;
+}
+
+message InscriptionInfo {
+  Attributes traits = 1;
+  string image = 2;           // base64
+  int64 valuation = 3;
 }

@@ -25,7 +25,6 @@ public class AutomationContractTestBase : DAppContractTestBase<AutomationContrac
     internal AutomationContractContainer.AutomationContractStub AutomationContractUser2Stub { get; set; }
     internal ACS0Container.ACS0Stub ZeroContractStub { get; set; }
     internal OracleContractContainer.OracleContractStub OracleContractStub { get; set; }
-    internal UpkeepContractContainer.UpkeepContractStub UpkeepContractStub { get; set; }
 
     protected ECKeyPair DefaultKeyPair => Accounts[0].KeyPair;
     protected Address DefaultAddress => Accounts[0].Address;
@@ -132,8 +131,8 @@ public class AutomationContractTestBase : DAppContractTestBase<AutomationContrac
                 }));
 
             UpkeepContractAddress = Address.Parser.ParseFrom(result.TransactionResult.ReturnValue);
-            UpkeepContractStub = GetTester<UpkeepContractContainer.UpkeepContractStub>(AutomationContractAddress,
-                DefaultKeyPair);
+            // UpkeepContractStub = GetTester<UpkeepContractContainer.UpkeepContractStub>(AutomationContractAddress,
+            //     DefaultKeyPair);
             // AutomationContractUserStub = GetAutomationContractContainerStub(UserKeyPair);
         }
     }

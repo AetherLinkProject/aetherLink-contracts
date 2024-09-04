@@ -96,6 +96,7 @@ message AIOracleConfigSet {
 
 enum ModelType {
     ChatGpt = 0;
+    Dall = 1;
 }
 
 enum DescriptionType {

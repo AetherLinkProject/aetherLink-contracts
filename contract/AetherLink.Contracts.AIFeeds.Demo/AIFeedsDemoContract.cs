@@ -39,15 +39,9 @@ public partial class AIFeedsDemoContract : AIFeedsDemoContractContainer.AIFeedsD
             TraceId = traceId,
             Name = info.Name
         });
-        
+
         return new Empty();
     }
 
     public override ChatGptResponse GetAIResult(Hash traceId) => State.AIRequestInfoMap[traceId].Result;
-
-    public override Empty HandleAIFeedsFulfillment(HandleAIFeedsFulfillmentInput input)
-    {
-        State.AIRequestInfoMap[input.TraceId].Result = ChatGptResponse.Parser.ParseFrom(input.Response);
-        return new Empty();
-    }
 }
