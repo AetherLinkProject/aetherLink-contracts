@@ -23,8 +23,8 @@ public partial class RampContract
 
         var messageInfo = new MessageInfo
         {
-            SourceChainId = input.TargetChainId,
-            TargetChainId = Context.ChainId,
+            SourceChainId = Context.ChainId,
+            TargetChainId = input.TargetChainId,
             Sender = Context.Sender.ToByteString(),
             Receiver = input.Receiver,
             Data = input.Data,
@@ -37,10 +37,11 @@ public partial class RampContract
 
         Context.Fire(new SendRequested
         {
-            MessageId = null,
-            TargetChainId = 0,
-            Receiver = null,
-            Data = null
+            MessageId = messageId,
+            TargetChainId = input.TargetChainId,
+            Sender = Context.Sender.ToByteString(),
+            Receiver = input.Receiver,
+            Data = input.Data
         });
 
         return new Empty();
