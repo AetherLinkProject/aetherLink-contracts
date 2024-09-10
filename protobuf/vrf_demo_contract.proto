@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package demo;
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "acs12.proto";
+import "request_interface.proto";
+
+// The namespace of this class
+option csharp_namespace = "AElf.Contracts.VRFDemo";
+
+service VRFDemoContract {
+  // The name of the state class the smart contract is going to use to access blockchain state
+  option (aelf.base) = "acs12.proto";
+  option (aelf.base) = "request_interface.proto";
+  option (aelf.csharp_state) = "AetherLink.Contracts.VRFDemo.VRFDemoContractState";
+
+  rpc Initialize (google.protobuf.Empty) returns (google.protobuf.Empty) {
+  }
+
+  rpc Play (google.protobuf.Int64Value) returns (google.protobuf.Empty) {
+  }
+}
+
+// An event that will be emitted from contract method call when Play is called.
+message PlayOutcomeEvent {
+  option (aelf.is_event) = true;
+  int64 won = 1;
+}
+
+message RecordInfo {
+  aelf.Address user_address = 1;
+  int64 play_amount = 2;
+}
