@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package demo;
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "acs12.proto";
+import "request_interface.proto";
+
+// import for using the google.protobuf.* type.
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+// The namespace of this class
+option csharp_namespace = "AElf.Contracts.DataFeedsDemo";
+
+service DataFeedsDemoContract {
+  // The name of the state class the smart contract is going to use to access blockchain state
+  option (aelf.base) = "acs12.proto";
+  option (aelf.base) = "request_interface.proto";
+  option (aelf.csharp_state) = "AetherLink.Contracts.DataFeedsDemo.DataFeedsDemoContractState";
+
+  rpc Initialize (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc StartPriceCollection (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc Purchase (PurchaseInput) returns (google.protobuf.Empty) {}
+}
+
+message LongList {
+    repeated int64 data = 1;
+}
+
+message PriceData {
+    int64 price = 1;
+    string token_pair = 2;
+    google.protobuf.Timestamp updated_at = 3;
+}
+
+message PurchaseInput {
+  string token_symbol_to_buy = 1;
+  int64 token_amount = 2;
+  Price sell_price = 3;
+}
+
+message Price {
+  aelf.Hash symbol = 1;
+  int64 amount = 2;
+}
+
+// log event
+message PriceUpdated {
+    option (aelf.is_event) = true;
+    int64 price = 1;
+    string token_pair = 2;
+    google.protobuf.Timestamp update_at = 3;
+}
