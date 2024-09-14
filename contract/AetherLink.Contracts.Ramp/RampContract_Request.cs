@@ -56,6 +56,10 @@ public partial class RampContract
         VerifyTransmitter();
         VerifyThresholdSignature(input);
 
+        var messageId = input.ReportContext.MessageId;
+        Assert(State.ReceivedMessageInfoMap[messageId] == null,
+            $"The same message {messageId} cannot be forwarded twice.");
+
         Context.SendInline(input.ReportContext.Receiver,
             nameof(RampInterfaceContainer.RampInterfaceReferenceState.ForwardMessage), new ForwardMessageInput
             {
@@ -65,9 +69,11 @@ public partial class RampContract
                 Report = input.Report
             });
 
+        State.ReceivedMessageInfoMap[messageId] = new();
+
         Context.Fire(new CommitReportAccepted
         {
-            MessageId = input.ReportContext.MessageId,
+            MessageId = messageId,
             SourceChainId = input.ReportContext.SourceChainId,
             TargetChainId = input.ReportContext.TargetChainId,
             Sender = input.ReportContext.Sender,
