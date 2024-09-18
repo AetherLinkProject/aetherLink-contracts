@@ -23,6 +23,7 @@ public class AutomationContractTestBase : DAppContractTestBase<AutomationContrac
     internal AutomationContractContainer.AutomationContractStub AutomationContractUserStub { get; set; }
     internal AutomationContractContainer.AutomationContractStub AutomationContractUser2Stub { get; set; }
     internal ACS0Container.ACS0Stub ZeroContractStub { get; set; }
+
     internal OracleContractContainer.OracleContractStub OracleContractStub { get; set; }
     // internal UpkeepContractContainer.UpkeepContractStub UpkeepContractStub { get; set; }
 
@@ -108,33 +109,6 @@ public class AutomationContractTestBase : DAppContractTestBase<AutomationContrac
             AutomationContractUserStub = GetAutomationContractContainerStub(UserKeyPair);
             AutomationContractUser2Stub = GetAutomationContractContainerStub(User2KeyPair);
         }
-
-        // Upkeep
-        // {
-        //     var code = ByteString.CopyFrom(File.ReadAllBytes(typeof(UpkeepContract).Assembly.Location));
-        //     var contractOperation = new ContractOperation
-        //     {
-        //         ChainId = 9992731,
-        //         CodeHash = HashHelper.ComputeFrom(code.ToByteArray()),
-        //         Deployer = DefaultAddress,
-        //         Salt = HashHelper.ComputeFrom("upkeep"),
-        //         Version = 1
-        //     };
-        //     contractOperation.Signature = GenerateContractSignature(DefaultKeyPair.PrivateKey, contractOperation);
-        //
-        //     var result = AsyncHelper.RunSync(async () => await ZeroContractStub.DeploySmartContract.SendAsync(
-        //         new ContractDeploymentInput
-        //         {
-        //             Category = KernelConstants.CodeCoverageRunnerCategory,
-        //             Code = code,
-        //             ContractOperation = contractOperation
-        //         }));
-        //
-        //     UpkeepContractAddress = Address.Parser.ParseFrom(result.TransactionResult.ReturnValue);
-        //     UpkeepContractStub = GetTester<UpkeepContractContainer.UpkeepContractStub>(AutomationContractAddress,
-        //         DefaultKeyPair);
-        //     // AutomationContractUserStub = GetAutomationContractContainerStub(UserKeyPair);
-        // }
     }
 
     internal AutomationContractContainer.AutomationContractStub GetAutomationContractContainerStub(ECKeyPair keyPair)
