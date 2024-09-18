@@ -15,6 +15,8 @@ public partial class AutomationContract
 {
     public override Empty RegisterUpkeep(RegisterUpkeepInput input)
     {
+        CheckInitialized();
+        CheckUnpause();
         Assert(IsAddressValid(input.AdminAddress), "Invalid Admin Address.");
         Assert(IsAddressValid(input.UpkeepContract), "Invalid Upkeep Contract Address.");
 
@@ -61,6 +63,8 @@ public partial class AutomationContract
 
     public override Empty DeregisterUpkeep(Hash upkeepId)
     {
+        CheckInitialized();
+
         var registeredUpkeep = State.RegisteredUpkeepMap[upkeepId];
         Assert(registeredUpkeep != null, "Request id not found.");
         CheckUpkeepAdminPermission(upkeepId);
