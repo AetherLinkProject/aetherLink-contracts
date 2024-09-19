@@ -11,4 +11,5 @@ public partial class RampContractState : ContractState
     public MappedState<Address, RampSenderInfo> RampSenders { get; set; }
     public MappedState<Hash, MessageInfo> MessageInfoMap { get; set; }
     public MappedState<Hash, object> ReceivedMessageInfoMap { get; set; }
+    public SingletonState<long> LatestEpoch { get; set; }
 }

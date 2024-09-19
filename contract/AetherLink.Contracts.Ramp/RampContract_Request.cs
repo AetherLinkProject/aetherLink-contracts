@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AElf;
+using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using AElf.Types;
 using Google.Protobuf;
@@ -34,6 +35,9 @@ public partial class RampContract
         Assert(State.MessageInfoMap[messageId] == null, "This message was send.");
         messageInfo.MessageId = messageId;
         State.MessageInfoMap[messageId] = messageInfo;
+        
+        var latestEpoch = State.LatestEpoch.Value;
+        State.LatestEpoch.Value = State.LatestEpoch.Value.Add(1);
 
         Context.Fire(new SendRequested
         {
@@ -41,7 +45,8 @@ public partial class RampContract
             TargetChainId = input.TargetChainId,
             Sender = Context.Sender.ToByteString(),
             Receiver = input.Receiver,
-            Data = input.Data
+            Data = input.Data,
+            Epoch = latestEpoch
         });
 
         return new Empty();
