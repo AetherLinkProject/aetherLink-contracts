@@ -39,9 +39,6 @@
         <ContractStub Include="..\..\protobuf\automation_contract.proto">
             <Link>Protobuf\Proto\automation_contract.proto</Link>
         </ContractStub>
-        <ContractStub Include="..\..\protobuf\automation_upkeep.proto">
-            <Link>Protobuf\Proto\automation_upkeep.proto</Link>
-        </ContractStub>
     </ItemGroup>
 
     <ItemGroup>
@@ -54,7 +51,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\contract\AetherLink.Contracts.Automation.Upkeep\AetherLink.Contracts.Automation.Upkeep.csproj" />
         <ProjectReference Include="..\..\contract\AetherLink.Contracts.Oracle\AetherLink.Contracts.Oracle.csproj" />
         <ProjectReference Include="..\..\contract\AetherLink.Contracts.Automation\AetherLink.Contracts.Automation.csproj" />
         <ProjectReference Include="..\..\src\AElf.Boilerplate.MainChain\AElf.Boilerplate.MainChain.csproj" />
@@ -62,6 +58,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Protobuf\Generated" />
         <Folder Include="Protobuf\Generated\" />
     </ItemGroup>
 </Project>
