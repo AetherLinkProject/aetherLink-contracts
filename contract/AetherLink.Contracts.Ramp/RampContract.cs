@@ -36,6 +36,7 @@ public partial class RampContract : RampContractContainer.RampContractBase
         if (State.Config.Value != null && State.Config.Value.Equals(input)) return new Empty();
 
         State.Config.Value = input;
+        State.LatestEpoch.Value = 0;
 
         Context.Fire(new ConfigSet { Config = State.Config.Value });
 
@@ -71,7 +72,7 @@ public partial class RampContract : RampContractContainer.RampContractBase
     public override Empty RemoveRampSender(Address senderAddress)
     {
         CheckAdminPermission();
-        
+
         Assert(IsAddressValid(senderAddress), "Invalid sender address to remove.");
         Assert(State.RampSenders[senderAddress] != null, "Sender is not existed.");
 

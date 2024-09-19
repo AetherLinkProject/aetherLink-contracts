@@ -21,7 +21,7 @@ service RampContract {
     option (aelf.csharp_state) = "AetherLink.Contracts.Ramp.RampContractState";
 
     // Admin
-    rpc Initialize(InitializeInput) returns (google.protobuf.Empty) {}
+    rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {}
     rpc SetConfig (Config) returns (google.protobuf.Empty) {}
     rpc GetConfig (google.protobuf.Empty) returns (Config) { option (aelf.is_view) = true; }
     rpc GetAdmin (google.protobuf.Empty) returns (aelf.Address) { option (aelf.is_view) = true; }
@@ -30,7 +30,8 @@ service RampContract {
     rpc AddRampSender (AddRampSenderInput) returns (google.protobuf.Empty) {}
     rpc RemoveRampSender (aelf.Address) returns (google.protobuf.Empty) {}
     rpc GetRampSender (aelf.Address) returns (RampSenderInfo) { option (aelf.is_view) = true; }
- 
+    rpc GetLatestEpoch (google.protobuf.Empty) returns (google.protobuf.Int64Value) { option (aelf.is_view) = true; }
+    
     // Request
     rpc Send (SendInput) returns (google.protobuf.Empty) {}
     rpc Commit (CommitInput) returns (google.protobuf.Empty) {}
