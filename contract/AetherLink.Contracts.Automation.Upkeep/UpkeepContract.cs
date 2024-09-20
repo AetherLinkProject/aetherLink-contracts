@@ -1,3 +1,4 @@
+using AElf;
 using AElf.Sdk.CSharp;
 using AElf.Types;
 using AetherLink.Contracts.Upkeep;
@@ -9,6 +10,9 @@ public class UpkeepContract : UpkeepContractContainer.UpkeepContractBase
 {
     public override Empty PerformUpkeep(PerformUpkeepInput input)
     {
+        Assert(input != null, "input is null");
+        Assert(input.PerformData != null, "PerformData is null");
+
         var checkData = LogTriggerCheckData.Parser.ParseFrom(input.PerformData);
 
         Context.Fire(new Triggered
