@@ -35,7 +35,7 @@ public partial class RampContract
         Assert(State.MessageInfoMap[messageId] == null, "This message was send.");
         messageInfo.MessageId = messageId;
         State.MessageInfoMap[messageId] = messageInfo;
-        
+
         var latestEpoch = State.LatestEpoch.Value;
         State.LatestEpoch.Value = State.LatestEpoch.Value.Add(1);
 
@@ -57,21 +57,23 @@ public partial class RampContract
         CheckInitialized();
 
         Assert(input != null, "Invalid commit input.");
-        VerifyReportContext(input.ReportContext);
+        Assert(input.Report != null, "Invalid report input.");
+        VerifyReportContext(input.Report.ReportContext);
         VerifyTransmitter();
         VerifyThresholdSignature(input);
 
-        var messageId = input.ReportContext.MessageId;
+        var reportContext = input.Report.ReportContext;
+        var messageId = reportContext.MessageId;
         Assert(State.ReceivedMessageInfoMap[messageId] == null,
             $"The same message {messageId} cannot be forwarded twice.");
 
-        Context.SendInline(input.ReportContext.Receiver,
+        Context.SendInline(Address.Parser.ParseFrom(reportContext.Receiver),
             nameof(RampInterfaceContainer.RampInterfaceReferenceState.ForwardMessage), new ForwardMessageInput
             {
-                SourceChainId = input.ReportContext.SourceChainId,
-                TargetChainId = input.ReportContext.TargetChainId,
-                Sender = input.ReportContext.Sender,
-                Report = input.Report
+                SourceChainId = reportContext.SourceChainId,
+                TargetChainId = reportContext.TargetChainId,
+                Sender = reportContext.Sender,
+                Message = input.Report.Message
             });
 
         State.ReceivedMessageInfoMap[messageId] = new();
@@ -79,11 +81,11 @@ public partial class RampContract
         Context.Fire(new CommitReportAccepted
         {
             MessageId = messageId,
-            SourceChainId = input.ReportContext.SourceChainId,
-            TargetChainId = input.ReportContext.TargetChainId,
-            Sender = input.ReportContext.Sender,
-            Receiver = input.ReportContext.Receiver,
-            Report = input.Report
+            SourceChainId = reportContext.SourceChainId,
+            TargetChainId = reportContext.TargetChainId,
+            Sender = reportContext.Sender,
+            Receiver = reportContext.Receiver,
+            Report = input.Report.Message
         });
 
         return new Empty();
@@ -94,7 +96,8 @@ public partial class RampContract
         Assert(context != null, "Invalid report context.");
         Assert(IsHashValid(context.MessageId), "Invalid message id.");
         Assert(Context.ChainId == context.TargetChainId, "Unmatched chain id.");
-        Assert(IsAddressValid(context.Receiver), "Invalid receiver address.");
+        var receiver = Address.Parser.ParseFrom(context.Receiver);
+        Assert(receiver != null && IsAddressValid(receiver), "Invalid receiver address.");
     }
 
     private void VerifyTransmitter()
@@ -110,7 +113,7 @@ public partial class RampContract
             "Not enough signatures.");
 
         var hash = HashHelper.ConcatAndCompute(HashHelper.ComputeFrom(input.Report.ToByteArray()),
-            HashHelper.ComputeFrom(input.ReportContext.ToString()));
+            HashHelper.ComputeFrom(input.Report.ReportContext.ToString()));
         HashSet<Address> signed = new();
         foreach (var signature in input.Signatures)
         {

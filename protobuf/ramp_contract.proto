@@ -60,9 +60,13 @@ message RampSenderInfo {
 }
 
 message CommitInput {
+    Report report = 1;
+    repeated bytes signatures = 2;
+}
+
+message Report {
     ReportContext report_context = 1;
-    bytes report = 2;
-    repeated bytes signatures = 3;
+    bytes message = 2;
 }
 
 message ReportContext {
@@ -70,7 +74,7 @@ message ReportContext {
     int64 source_chain_id = 2;
     int64 target_chain_id = 3;
     bytes sender = 4;
-    aelf.Address receiver = 5;
+    bytes receiver = 5;
 }
 
 message SendInput {
@@ -111,7 +115,7 @@ message CommitReportAccepted {
     int64 source_chain_id = 2;
     int64 target_chain_id = 3;
     bytes sender = 4;
-    aelf.Address receiver = 5;
+    bytes receiver = 5;
     bytes report = 6;    
 }
 
@@ -119,8 +123,9 @@ message SendRequested {
     option (aelf.is_event) = true;
     aelf.Hash message_id = 1;
     int64 target_chain_id = 2;
-    bytes receiver = 3;
-    bytes sender = 4;
-    bytes data = 5;
-    int64 epoch = 6;
+    int64 source_chain_id = 3;
+    bytes receiver = 4;
+    bytes sender = 5;
+    bytes data = 6;
+    int64 epoch = 7;
 }

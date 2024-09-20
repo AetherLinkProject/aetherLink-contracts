@@ -19,5 +19,5 @@ message ForwardMessageInput {
     int64 source_chain_id = 1;
     int64 target_chain_id = 2;
     bytes sender = 3;
-    bytes report = 4;
+    bytes message = 4;
 }
