@@ -11,10 +11,7 @@ public partial class AutomationContractState : ContractState
     public SingletonState<Address> Admin { get; set; }
     public SingletonState<bool> Paused { get; set; }
     public SingletonState<Config> Config { get; set; }
-    internal ACS0Container.ACS0ReferenceState GenesisContract { get; set; }
-    internal OracleContractContainer.OracleContractReferenceState OracleContract { get; set; }
     public SingletonState<int> RequestTypeIndex { get; set; }
     public SingletonState<long> SubscriptionId { get; set; }
-
     public MappedState<Hash, UpkeepInfo> RegisteredUpkeepMap { get; set; }
 }
