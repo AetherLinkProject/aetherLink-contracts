@@ -12,7 +12,7 @@ public class UpkeepContract : UpkeepContractContainer.UpkeepContractBase
         Assert(input != null, "input is null");
         Assert(input.PerformData != null, "PerformData is null");
 
-        var checkData = LogTriggerCheckData.Parser.ParseFrom(input.PerformData);
+        var checkData = LogTriggerCheckData.Parser.ParseFrom(input.ReportResult);
 
         Context.Fire(new Triggered
         {
@@ -20,7 +20,7 @@ public class UpkeepContract : UpkeepContractContainer.UpkeepContractBase
             BlockHeight = checkData.BlockHeight,
             EventName = checkData.EventName,
             Index = checkData.Index,
-            Data = input.PerformData
+            PerformData = input.PerformData
         });
 
         return new Empty();
