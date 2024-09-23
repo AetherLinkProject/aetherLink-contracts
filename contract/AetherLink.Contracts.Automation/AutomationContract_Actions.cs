@@ -124,7 +124,7 @@ public partial class AutomationContract
         var originData = RegisterUpkeepInput.Parser.ParseFrom(meta.SpecificData);
         Context.SendInline(State.RegisteredUpkeepMap[upkeepId].UpkeepContract,
             nameof(UpkeepInterfaceContainer.UpkeepInterfaceReferenceState.PerformUpkeep),
-            new PerformUpkeepInput { PerformData = originData.PerformData });
+            new PerformUpkeepInput { PerformData = originData.PerformData, ReportResult = report.Result });
 
         Context.Fire(new UpkeepPerformed { UpkeepId = upkeepId });
 
