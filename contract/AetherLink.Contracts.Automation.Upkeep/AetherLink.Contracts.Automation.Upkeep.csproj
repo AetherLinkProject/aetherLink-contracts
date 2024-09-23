@@ -26,9 +26,9 @@
         <ContractCode Include="..\..\protobuf\automation_upkeep.proto">
             <Link>Protobuf\Proto\automation_upkeep.proto</Link>
         </ContractCode>
-        <ContractReference Include="..\..\protobuf\automation_contract.proto">
+        <CommonMessage Include="..\..\protobuf\automation_contract.proto">
             <Link>Protobuf\Proto\automation_contract.proto</Link>
-        </ContractReference>
+        </CommonMessage>
         <ContractReference Include="..\..\protobuf\acs0.proto">
             <Link>Protobuf\Proto\acs0.proto</Link>
         </ContractReference>

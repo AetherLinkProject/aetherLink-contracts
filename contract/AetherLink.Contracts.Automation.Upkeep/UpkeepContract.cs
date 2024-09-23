@@ -1,4 +1,3 @@
-using AElf;
 using AElf.Sdk.CSharp;
 using AElf.Types;
 using AetherLink.Contracts.Upkeep;
@@ -20,7 +19,8 @@ public class UpkeepContract : UpkeepContractContainer.UpkeepContractBase
             ChainId = checkData.ChainId,
             BlockHeight = checkData.BlockHeight,
             EventName = checkData.EventName,
-            Index = checkData.Index
+            Index = checkData.Index,
+            Data = input.PerformData
         });
 
         return new Empty();
