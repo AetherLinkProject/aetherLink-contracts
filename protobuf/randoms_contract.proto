@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package demo;
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "acs12.proto";
+import "request_interface.proto";
+
+// The namespace of this class
+option csharp_namespace = "AElf.Contracts.Randoms";
+
+service RandomsContract {
+  // The name of the state class the smart contract is going to use to access blockchain state
+  option (aelf.base) = "acs12.proto";
+  option (aelf.base) = "request_interface.proto";
+  option (aelf.csharp_state) = "AetherLink.Contracts.Randoms.RandomsContractState";
+
+  rpc Initialize (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc Play (google.protobuf.Empty) returns (google.protobuf.Empty) { }
+  rpc GetPlayedResult(aelf.Hash) returns (RandomRequestInfo) { option (aelf.is_view) = true; }
+      // rpc GetAdmin(google.protobuf.Empty) returns (aelf.Address) { option (aelf.is_view) = true; }
+
+}
+
+// An event that will be emitted from contract method call when Play is called.
+
+message RandomPlayed {
+  option (aelf.is_event) = true;
+  aelf.Hash  trace_id = 1;
+}
+
+message RandomRequestInfo {
+  int32 number = 1;
+}
