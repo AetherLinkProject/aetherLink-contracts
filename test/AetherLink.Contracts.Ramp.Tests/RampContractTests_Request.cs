@@ -77,19 +77,23 @@ public partial class RampContractTests
             result.TransactionResult.Error.ShouldContain("Invalid report context.");
         }
         {
-            var result = await UserRampContractStub.Commit.SendWithExceptionAsync(new() { ReportContext = new() });
+            var result = await UserRampContractStub.Commit.SendWithExceptionAsync(new() { Report = new() });
             result.TransactionResult.Error.ShouldContain("Invalid message id.");
         }
         {
             var result = await UserRampContractStub.Commit.SendWithExceptionAsync(new()
-                { ReportContext = new() { MessageId = HashHelper.ComputeFrom("mock_message_id") } });
+                { Report = new() { ReportContext = { MessageId = HashHelper.ComputeFrom("mock_message_id") } } });
             result.TransactionResult.Error.ShouldContain("Unmatched chain id.");
         }
 
         {
             var result = await UserRampContractStub.Commit.SendWithExceptionAsync(new()
             {
-                ReportContext = new() { MessageId = HashHelper.ComputeFrom("mock_message_id"), TargetChainId = 9992731 }
+                Report =
+                {
+                    ReportContext = new()
+                        { MessageId = HashHelper.ComputeFrom("mock_message_id"), TargetChainId = 9992731 }
+                }
             });
             result.TransactionResult.Error.ShouldContain("Invalid receiver address.");
         }
@@ -106,25 +110,30 @@ public partial class RampContractTests
         var reportContext = new ReportContext
         {
             MessageId = HashHelper.ComputeFrom("mock_message_id"), TargetChainId = 9992731,
-            Receiver = UserAddress
+            Receiver = ByteString.CopyFrom(UserAddress.ToByteArray())
         };
 
         {
             var result =
-                await UserRampContractStub.Commit.SendWithExceptionAsync(new() { ReportContext = reportContext });
+                await UserRampContractStub.Commit.SendWithExceptionAsync(new()
+                {
+                    Report =
+                    {
+                        ReportContext = reportContext
+                    }
+                });
             result.TransactionResult.Error.ShouldContain("Invalid transmitter");
         }
 
-        var commitInput = new CommitInput
-        {
-            ReportContext = reportContext,
-            Report = reportContext.ToByteString(),
-        };
+        var commitInput = new CommitInput { Report = { ReportContext = reportContext } };
         {
             var result = await RampContractStub.Commit.SendWithExceptionAsync(new CommitInput
             {
-                ReportContext = reportContext,
-                Report = reportContext.ToByteString(),
+                Report =
+                {
+                    ReportContext = reportContext,
+                },
+                // Report = reportContext.ToByteString(),
                 Signatures = { Hash.Empty.Value, Hash.Empty.Value }
             });
             result.TransactionResult.Error.ShouldContain("Not enough signatures.");
@@ -132,8 +141,11 @@ public partial class RampContractTests
         {
             var result = await RampContractStub.Commit.SendWithExceptionAsync(new CommitInput
             {
-                ReportContext = reportContext,
-                Report = reportContext.ToByteString(),
+                Report =
+                {
+                    ReportContext = reportContext,
+                },
+                // Report = reportContext.ToByteString(),
                 Signatures =
                 {
                     GenerateSignature(Accounts[2].KeyPair.PrivateKey, commitInput),
@@ -148,8 +160,10 @@ public partial class RampContractTests
         {
             var result = await RampContractStub.Commit.SendWithExceptionAsync(new CommitInput
             {
-                ReportContext = reportContext,
-                Report = reportContext.ToByteString(),
+                Report =
+                {
+                    ReportContext = reportContext,
+                },
                 Signatures =
                 {
                     GenerateSignature(Accounts[2].KeyPair.PrivateKey, commitInput),
@@ -164,8 +178,10 @@ public partial class RampContractTests
         {
             var result = await RampContractStub.Commit.SendWithExceptionAsync(new CommitInput
             {
-                ReportContext = reportContext,
-                Report = reportContext.ToByteString(),
+                Report =
+                {
+                    ReportContext = reportContext,
+                },
                 Signatures =
                 {
                     GenerateSignature(Accounts[2].KeyPair.PrivateKey, commitInput),
@@ -179,8 +195,10 @@ public partial class RampContractTests
         {
             var result = await RampContractStub.Commit.SendWithExceptionAsync(new CommitInput
             {
-                ReportContext = reportContext,
-                Report = reportContext.ToByteString(),
+                Report =
+                {
+                    ReportContext = reportContext,
+                },
                 Signatures =
                 {
                     GenerateSignature(Accounts[2].KeyPair.PrivateKey, commitInput),
