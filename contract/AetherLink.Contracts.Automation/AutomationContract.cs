@@ -88,6 +88,41 @@ public partial class AutomationContract : AutomationContractContainer.Automation
 
         return new Empty();
     }
+    
+    public override Empty TransferAdmin(Address input)
+    {
+        CheckAdminPermission();
+        Assert(IsAddressValid(input), "Invalid input admin.");
+        Assert(input != State.Admin.Value, "Cannot transfer to self.");
+
+        State.PendingAdmin.Value = input;
+
+        Context.Fire(new AdminTransferRequested
+        {
+            From = Context.Sender,
+            To = input
+        });
+
+        return new Empty();
+    }
+
+    public override Empty AcceptAdmin(Empty input)
+    {
+        Assert(Context.Sender == State.PendingAdmin.Value, "No permission.");
+
+        var from = State.Admin.Value.Clone();
+
+        State.Admin.Value = Context.Sender;
+        State.PendingAdmin.Value = new Address();
+
+        Context.Fire(new AdminTransferred
+        {
+            From = from,
+            To = Context.Sender
+        });
+
+        return new Empty();
+    }
 
     public override Address GetAdmin(Empty input) => State.Admin.Value;
     public override BoolValue IsPaused(Empty input) => new() { Value = State.Paused.Value };

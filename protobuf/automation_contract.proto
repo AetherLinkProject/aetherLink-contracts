@@ -30,6 +30,8 @@ service AutomationContract {
     rpc Initialize(InitializeInput) returns (google.protobuf.Empty) {}
     rpc Pause (google.protobuf.Empty) returns (google.protobuf.Empty) {}
     rpc Unpause (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc TransferAdmin(aelf.Address) returns (google.protobuf.Empty) {}
+    rpc AcceptAdmin(google.protobuf.Empty) returns (google.protobuf.Empty) {}
     
     // Config
     rpc SetOracleContractAddress (aelf.Address) returns (google.protobuf.Empty) {}
@@ -125,4 +127,16 @@ message LogTriggerCheckData {
   string contractAddress = 5;
   string event_name = 6;
   int32 index = 7;
+}
+
+message AdminTransferRequested {
+    option (aelf.is_event) = true;
+    aelf.Address from = 1;
+    aelf.Address to = 2;
+}
+
+message AdminTransferred {
+    option (aelf.is_event) = true;
+    aelf.Address from = 1;
+    aelf.Address to = 2;
 }

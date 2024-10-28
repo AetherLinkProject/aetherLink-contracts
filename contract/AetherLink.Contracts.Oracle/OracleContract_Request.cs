@@ -223,8 +223,11 @@ public partial class OracleContract
         Assert(coordinator != null, "Coordinator not found.");
         Assert(coordinator.Status, "Coordinator not available.");
 
-        var requestAdmin = State.RequestStartedAdminMap[input.RequestId];
-        Assert(requestAdmin != null && requestAdmin == Context.Origin, "No cancel permission.");
+        if (Context.Origin != State.Admin.Value)
+        {
+            var requestAdmin = State.RequestStartedAdminMap[input.RequestId];
+            Assert(requestAdmin != null && requestAdmin == Context.Origin, "No cancel permission.");
+        }
 
         Context.SendInline(coordinator.CoordinatorContractAddress,
             nameof(CoordinatorInterfaceContainer.CoordinatorInterfaceReferenceState.DeleteCommitment), input.RequestId);
