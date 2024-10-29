@@ -76,7 +76,7 @@ public partial class RampContract
                 Message = input.Report.Message
             });
 
-        State.ReceivedMessageInfoMap[messageId] = new();
+        State.ReceivedMessageInfoMap[messageId] = HashHelper.ComputeFrom(input);
 
         Context.Fire(new CommitReportAccepted
         {

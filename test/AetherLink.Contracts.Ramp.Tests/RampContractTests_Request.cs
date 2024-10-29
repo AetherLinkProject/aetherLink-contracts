@@ -1,13 +1,9 @@
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AElf;
-using AElf.CSharp.Core;
 using AElf.Types;
 using AetherLink.Contracts.Oracle;
 using Google.Protobuf;
-using Google.Protobuf.Collections;
-using Google.Protobuf.WellKnownTypes;
-using Org.BouncyCastle.Asn1.Ocsp;
 using Shouldly;
 using Xunit;
 
@@ -15,6 +11,75 @@ namespace AetherLink.Contracts.Ramp;
 
 public partial class RampContractTests
 {
+    [Fact]
+    public async Task SendTests()
+    {
+        await PrepareOracleContractsAsync();
+
+        {
+            var sendInput = new SendInput
+            {
+                TargetChainId = 1,
+                Receiver = UserAddress.ToByteString(),
+            };
+            var data = HashHelper.ComputeFrom(sendInput).ToByteString();
+            sendInput.Data = data;
+
+            var result = await UserRampContractStub.Send.SendAsync(sendInput);
+            result.TransactionResult.Status.ShouldBe(TransactionResultStatus.Mined);
+            {
+                var log = GetLogEvent<SendRequested>(result.TransactionResult);
+                log.Data.ShouldBe(data);
+                log.Epoch.ShouldBe(0);
+                log.TargetChainId.ShouldBe(1);
+                log.Receiver.ShouldBe(UserAddress.ToByteString());
+                log.Sender.ShouldBe(UserAddress.ToByteString());
+            }
+        }
+
+        var messageId = HashHelper.ComputeFrom("test_message");
+        var messageData = HashHelper.ComputeFrom("test_message_data").ToByteString();
+        var report = new Report
+        {
+            ReportContext = new ReportContext
+            {
+                MessageId = messageId,
+                SourceChainId = 1100,
+                TargetChainId = 9992731,
+                Sender = UserAddress.ToByteString(),
+                Receiver = TestRampContractAddress.ToByteString()
+            },
+            Message = messageData
+        };
+
+        var commitInput = new CommitInput { Report = report };
+
+        {
+            var signatures = new List<ByteString>
+            {
+                GenerateSignature(Signer1KeyPair.PrivateKey, commitInput),
+                GenerateSignature(Signer2KeyPair.PrivateKey, commitInput),
+                GenerateSignature(Signer3KeyPair.PrivateKey, commitInput),
+                GenerateSignature(Signer4KeyPair.PrivateKey, commitInput),
+                GenerateSignature(Signer5KeyPair.PrivateKey, commitInput)
+            };
+
+            commitInput.Signatures.AddRange(signatures);
+            var result = await TransmitterRampContractStub.Commit.SendAsync(commitInput);
+            result.TransactionResult.Status.ShouldBe(TransactionResultStatus.Mined);
+
+            {
+                var log = GetLogEvent<CommitReportAccepted>(result.TransactionResult);
+                log.MessageId.ShouldBe(messageId);
+                log.SourceChainId.ShouldBe(1100);
+                log.TargetChainId.ShouldBe(9992731);
+                log.Receiver.ShouldBe(TestRampContractAddress.ToByteString());
+                log.Sender.ShouldBe(UserAddress.ToByteString());
+                log.Report.ShouldBe(messageData);
+            }
+        }
+    }
+
     [Fact]
     public async Task SendTests_Fail()
     {

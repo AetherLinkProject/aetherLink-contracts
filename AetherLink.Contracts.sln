@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AetherLink.Contracts.Ramp",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AetherLink.Contracts.Ramp.Tests", "test\AetherLink.Contracts.Ramp.Tests\AetherLink.Contracts.Ramp.Tests.csproj", "{7845E8DC-7300-4AE5-A5A4-8160FC0AC89F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AetherLink.Contracts.TestRampContract", "test\AetherLink.Contracts.TestRampContract\AetherLink.Contracts.TestRampContract.csproj", "{593CAE63-96A7-4B1F-A2F2-5E3E8256732A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{7845E8DC-7300-4AE5-A5A4-8160FC0AC89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7845E8DC-7300-4AE5-A5A4-8160FC0AC89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7845E8DC-7300-4AE5-A5A4-8160FC0AC89F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{593CAE63-96A7-4B1F-A2F2-5E3E8256732A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{593CAE63-96A7-4B1F-A2F2-5E3E8256732A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{593CAE63-96A7-4B1F-A2F2-5E3E8256732A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{593CAE63-96A7-4B1F-A2F2-5E3E8256732A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,6 +124,7 @@ Global
 		{E2AE54DD-DFF5-499E-8BA4-72152A6D28B3} = {83F5DA0A-BC4D-4B34-859D-EB0E3FE0AD2A}
 		{9BE5CA66-364D-448F-B8AE-641C917664CF} = {83F5DA0A-BC4D-4B34-859D-EB0E3FE0AD2A}
 		{7845E8DC-7300-4AE5-A5A4-8160FC0AC89F} = {DBC47323-E6A2-42A2-A624-CE2EE6139567}
+		{593CAE63-96A7-4B1F-A2F2-5E3E8256732A} = {DBC47323-E6A2-42A2-A624-CE2EE6139567}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7426B41-E959-40E4-9ED8-ED8D9C50F133}

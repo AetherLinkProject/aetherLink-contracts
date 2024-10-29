@@ -29,6 +29,8 @@ service RampContract {
     rpc GetOracleContractAddress (google.protobuf.Empty) returns (aelf.Address) { option (aelf.is_view) = true; }
     rpc AddRampSender (AddRampSenderInput) returns (google.protobuf.Empty) {}
     rpc RemoveRampSender (aelf.Address) returns (google.protobuf.Empty) {}
+    rpc TransferAdmin(aelf.Address) returns (google.protobuf.Empty) {}
+    rpc AcceptAdmin(google.protobuf.Empty) returns (google.protobuf.Empty) {}
     rpc GetRampSender (aelf.Address) returns (RampSenderInfo) { option (aelf.is_view) = true; }
     rpc GetLatestEpoch (google.protobuf.Empty) returns (google.protobuf.Int64Value) { option (aelf.is_view) = true; }
     
@@ -128,4 +130,16 @@ message SendRequested {
     bytes sender = 5;
     bytes data = 6;
     int64 epoch = 7;
+}
+
+message AdminTransferRequested {
+    option (aelf.is_event) = true;
+    aelf.Address from = 1;
+    aelf.Address to = 2;
+}
+
+message AdminTransferred {
+    option (aelf.is_event) = true;
+    aelf.Address from = 1;
+    aelf.Address to = 2;
 }

@@ -62,6 +62,7 @@
         <ProjectReference Include="..\..\contract\AetherLink.Contracts.Oracle\AetherLink.Contracts.Oracle.csproj" />
         <ProjectReference Include="..\..\src\AElf.Boilerplate.MainChain\AElf.Boilerplate.MainChain.csproj" />
         <ProjectReference Include="..\..\src\AElf.Boilerplate.TestBase\AElf.Boilerplate.TestBase.csproj" />
+        <ProjectReference Include="..\..\test\AetherLink.Contracts.TestRampContract\AetherLink.Contracts.TestRampContract.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -7,9 +7,10 @@ public partial class RampContractState : ContractState
 {
     public SingletonState<bool> Initialized { get; set; }
     public SingletonState<Address> Admin { get; set; }
+    public SingletonState<Address> PendingAdmin { get; set; }
     public SingletonState<Config> Config { get; set; }
     public MappedState<Address, RampSenderInfo> RampSenders { get; set; }
     public MappedState<Hash, MessageInfo> MessageInfoMap { get; set; }
-    public MappedState<Hash, object> ReceivedMessageInfoMap { get; set; }
+    public MappedState<Hash, Hash> ReceivedMessageInfoMap { get; set; }
     public SingletonState<long> LatestEpoch { get; set; }
 }
