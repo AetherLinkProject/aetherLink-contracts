@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>AetherLink.Contracts.Automation</RootNamespace>
+        <IsContract>true</IsContract>
+        <PackageId>AetherLink.Contracts.Automation</PackageId>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Description>Automation Contract</Description>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <ItemGroup>
+        <ContractReference Include="..\..\protobuf\acs0.proto">
+            <Link>Protobuf\Proto\acs0.proto</Link>
+        </ContractReference>
+    </ItemGroup>
+    <ItemGroup>
+        <ContractBase Include="..\..\protobuf\acs12.proto">
+            <Link>Protobuf\Proto\reference\acs12.proto</Link>
+        </ContractBase>
+        <ContractBase Include="..\..\protobuf\coordinator_contract.proto">
+            <Link>Protobuf\Proto\coordinator_contract.proto</Link>
+        </ContractBase>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ContractCode Include="..\..\protobuf\automation_contract.proto">
+            <Link>Protobuf\Proto\automation_contract.proto</Link>
+        </ContractCode>
+        <ContractReference Include="..\..\protobuf\upkeep_interface.proto">
+            <Link>Protobuf\Proto\upkeep_interface.proto</Link>
+        </ContractReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <CommonMessage Include="..\..\protobuf\oracle_common_message.proto">
+            <Link>Protobuf\Proto\oracle_common_message.proto</Link>
+        </CommonMessage>
+        <ContractReference Include="..\..\protobuf\oracle_contract.proto">
+            <Link>Protobuf\Proto\oracle_contract.proto</Link>
+        </ContractReference>
+    </ItemGroup>
+</Project>
