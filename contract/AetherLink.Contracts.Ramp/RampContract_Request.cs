@@ -95,9 +95,11 @@ public partial class RampContract
     {
         Assert(context != null, "Invalid report context.");
         Assert(IsHashValid(context.MessageId), "Invalid message id.");
-        Assert(Context.ChainId == context.TargetChainId, "Unmatched chain id.");
-        var receiver = Address.Parser.ParseFrom(context.Receiver);
-        Assert(receiver != null && IsAddressValid(receiver), "Invalid receiver address.");
+        Assert( Context.ChainId == context.TargetChainId, "Unmatched chain id.");
+        Assert(
+            context.Receiver != null && Address.Parser.ParseFrom(context.Receiver) != null &&
+            IsAddressValid(Address.Parser.ParseFrom(context.Receiver)),
+            "Invalid receiver address.");
     }
 
     private void VerifyTransmitter()
