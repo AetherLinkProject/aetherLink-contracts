@@ -91,11 +91,21 @@ public partial class RampContract
         return new Empty();
     }
 
+    public override Empty Cancel(Hash input)
+    {
+        CheckInitialized();
+        CheckAdminPermission();
+        Assert(IsHashValid(input) && State.MessageInfoMap[input] != null, "This message id is invalid.");
+
+        Context.Fire(new RequestCancelled { MessageId = input });
+        return new Empty();
+    }
+
     private void VerifyReportContext(ReportContext context)
     {
         Assert(context != null, "Invalid report context.");
         Assert(IsHashValid(context.MessageId), "Invalid message id.");
-        Assert( Context.ChainId == context.TargetChainId, "Unmatched chain id.");
+        Assert(Context.ChainId == context.TargetChainId, "Unmatched chain id.");
         Assert(
             context.Receiver != null && Address.Parser.ParseFrom(context.Receiver) != null &&
             IsAddressValid(Address.Parser.ParseFrom(context.Receiver)),
