@@ -83,15 +83,7 @@ public partial class RampContract
 
         State.ReceivedMessageInfoMap[messageId] = HashHelper.ComputeFrom(input);
 
-        Context.Fire(new CommitReportAccepted
-        {
-            MessageId = messageId,
-            SourceChainId = reportContext.SourceChainId,
-            TargetChainId = reportContext.TargetChainId,
-            Sender = reportContext.Sender,
-            Receiver = reportContext.Receiver,
-            Report = input.Report
-        });
+        Context.Fire(new CommitReportAccepted { Report = input.Report });
 
         return new Empty();
     }

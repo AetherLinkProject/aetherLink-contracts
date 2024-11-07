@@ -70,11 +70,11 @@ public partial class RampContractTests
 
             {
                 var log = GetLogEvent<CommitReportAccepted>(result.TransactionResult);
-                log.MessageId.ShouldBe(messageId);
-                log.SourceChainId.ShouldBe(1100);
-                log.TargetChainId.ShouldBe(9992731);
-                log.Receiver.ShouldBe(TestRampContractAddress.ToByteString());
-                log.Sender.ShouldBe(UserAddress.ToByteString());
+                log.Report.ReportContext.MessageId.ShouldBe(messageId);
+                log.Report.ReportContext.SourceChainId.ShouldBe(1100);
+                log.Report.ReportContext.TargetChainId.ShouldBe(9992731);
+                log.Report.ReportContext.Receiver.ShouldBe(TestRampContractAddress.ToByteString());
+                log.Report.ReportContext.Sender.ShouldBe(UserAddress.ToByteString());
                 log.Report.Message.ShouldBe(messageData);
             }
         }
@@ -161,11 +161,11 @@ public partial class RampContractTests
 
             {
                 var log = GetLogEvent<CommitReportAccepted>(result.TransactionResult);
-                log.MessageId.ShouldBe(messageId);
-                log.SourceChainId.ShouldBe(1100);
-                log.TargetChainId.ShouldBe(9992731);
-                log.Receiver.ShouldBe(TestRampContractAddress.ToByteString());
-                log.Sender.ShouldBe(UserAddress.ToByteString());
+                log.Report.ReportContext.MessageId.ShouldBe(messageId);
+                log.Report.ReportContext.SourceChainId.ShouldBe(1100);
+                log.Report.ReportContext.TargetChainId.ShouldBe(9992731);
+                log.Report.ReportContext.Receiver.ShouldBe(TestRampContractAddress.ToByteString());
+                log.Report.ReportContext.Sender.ShouldBe(UserAddress.ToByteString());
                 log.Report.Message.ShouldBe(messageData);
             }
         }
