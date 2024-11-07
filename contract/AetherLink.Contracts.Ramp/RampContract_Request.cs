@@ -90,7 +90,7 @@ public partial class RampContract
             TargetChainId = reportContext.TargetChainId,
             Sender = reportContext.Sender,
             Receiver = reportContext.Receiver,
-            Report = input.Report.Message
+            Report = input.Report
         });
 
         return new Empty();

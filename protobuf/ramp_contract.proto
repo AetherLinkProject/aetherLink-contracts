@@ -139,7 +139,7 @@ message CommitReportAccepted {
     int64 target_chain_id = 3;
     bytes sender = 4;
     bytes receiver = 5;
-    bytes report = 6;    
+    Report report = 6;    
 }
 
 message SendRequested {    

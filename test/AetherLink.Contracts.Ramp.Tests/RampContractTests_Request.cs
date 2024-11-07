@@ -75,7 +75,7 @@ public partial class RampContractTests
                 log.TargetChainId.ShouldBe(9992731);
                 log.Receiver.ShouldBe(TestRampContractAddress.ToByteString());
                 log.Sender.ShouldBe(UserAddress.ToByteString());
-                log.Report.ShouldBe(messageData);
+                log.Report.Message.ShouldBe(messageData);
             }
         }
     }
@@ -166,7 +166,7 @@ public partial class RampContractTests
                 log.TargetChainId.ShouldBe(9992731);
                 log.Receiver.ShouldBe(TestRampContractAddress.ToByteString());
                 log.Sender.ShouldBe(UserAddress.ToByteString());
-                log.Report.ShouldBe(messageData);
+                log.Report.Message.ShouldBe(messageData);
             }
         }
     }
