@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AElf;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
 using Shouldly;
@@ -211,5 +212,67 @@ public partial class RampContractTests : RampContractTestBase
             var result = await RampContractStub.RemoveRampSender.SendWithExceptionAsync(UserAddress);
             result.TransactionResult.Error.ShouldContain("Sender is not existed.");
         }
+    }
+
+    [Fact]
+    public async Task SetTokenSwapConfigTests()
+    {
+        await InitializeAsync();
+
+        {
+            var result = await RampContractStub.AddRampSender.SendAsync(new() { SenderAddress = UserAddress });
+            result.TransactionResult.Status.ShouldBe(TransactionResultStatus.Mined);
+        }
+        {
+            var tokenSwapConfigs = new TokenSwapList();
+            var tonTokenSwapInfoList = new TokenSwapInfo
+            {
+                TargetChainId = 1100,
+                TargetContractAddress = "TON",
+                TokenAddress = "TON",
+                OriginToken = "ELFTON"
+            };
+            tonTokenSwapInfoList.SwapId = HashHelper.ComputeFrom(tonTokenSwapInfoList);
+            tokenSwapConfigs.TokenSwapInfoList.Add(tonTokenSwapInfoList);
+
+            var evmTokenSwapInfoList = new TokenSwapInfo
+            {
+                TargetChainId = 100,
+                TargetContractAddress = "EVM",
+                TokenAddress = "EVM",
+                OriginToken = "ELFETH"
+            };
+            evmTokenSwapInfoList.SwapId = HashHelper.ComputeFrom(evmTokenSwapInfoList);
+            tokenSwapConfigs.TokenSwapInfoList.Add(evmTokenSwapInfoList);
+
+            var result =
+                await UserRampContractStub.SetTokenSwapConfig.SendAsync(new() { TokenSwapList = tokenSwapConfigs });
+            result.TransactionResult.Status.ShouldBe(TransactionResultStatus.Mined);
+
+            var log = GetLogEvent<TokenSwapConfigUpdated>(result.TransactionResult);
+            log.TokenSwapList.ShouldBe(tokenSwapConfigs);
+
+            var tokenSwapConfig = await UserRampContractStub.GetTokenSwapConfig.CallAsync(UserAddress);
+            tokenSwapConfig.TokenSwapList.TokenSwapInfoList.ShouldBe(tokenSwapConfigs.TokenSwapInfoList);
+        }
+    }
+
+    [Fact]
+    public async Task SetTokenSwapConfigTests_Failed()
+    {
+        var configs = new TokenSwapList();
+        var tokenSwapInfo = new TokenSwapInfo
+        {
+            TargetChainId = 1,
+            TargetContractAddress = "ABC",
+            TokenAddress = "ABC",
+            OriginToken = "ELF"
+        };
+        tokenSwapInfo.SwapId = HashHelper.ComputeFrom(tokenSwapInfo);
+        configs.TokenSwapInfoList.Add(tokenSwapInfo);
+
+        var result = await UserRampContractStub.SetTokenSwapConfig.SendWithExceptionAsync(new()
+            { TokenSwapList = configs });
+        result.TransactionResult.Error.ShouldContain("The sender does not have permission to set TokenSwap config.");
     }
 }

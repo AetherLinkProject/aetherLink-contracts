@@ -1,13 +1,12 @@
 // the version of the language, use proto3 for contracts
 syntax = "proto3";
 
-package ramp;
-
 // some core imports for AElf chain types
 import "aelf/core.proto";
 import "aelf/options.proto";
 import "acs12.proto";
 import "oracle_common_message.proto";
+import "ramp_common_message.proto";
 
 // import for using the google.protobuf.* type.
 import "google/protobuf/empty.proto";
@@ -29,6 +28,8 @@ service RampContract {
     rpc GetOracleContractAddress (google.protobuf.Empty) returns (aelf.Address) { option (aelf.is_view) = true; }
     rpc AddRampSender (AddRampSenderInput) returns (google.protobuf.Empty) {}
     rpc RemoveRampSender (aelf.Address) returns (google.protobuf.Empty) {}
+    rpc SetTokenSwapConfig (TokenSwapConfig) returns (google.protobuf.Empty) {}
+    rpc GetTokenSwapConfig (aelf.Address) returns (TokenSwapConfig)  { option (aelf.is_view) = true; }
     rpc TransferAdmin(aelf.Address) returns (google.protobuf.Empty) {}
     rpc AcceptAdmin(google.protobuf.Empty) returns (google.protobuf.Empty) {}
     rpc GetRampSender (aelf.Address) returns (RampSenderInfo) { option (aelf.is_view) = true; }
@@ -40,8 +41,8 @@ service RampContract {
 }
 
 message InitializeInput {
-  aelf.Address admin = 1;
-  aelf.Address oracle = 2;
+    aelf.Address admin = 1;
+    aelf.Address oracle = 2;
 }
 
 message Config {
@@ -69,6 +70,7 @@ message CommitInput {
 message Report {
     ReportContext report_context = 1;
     bytes message = 2;
+    ramp.TokenAmount token_amount = 3;
 }
 
 message ReportContext {
@@ -82,7 +84,8 @@ message ReportContext {
 message SendInput {
     int64 target_chain_id = 1;
     bytes receiver = 2;
-    bytes data = 3;
+    bytes message = 3;
+    ramp.TokenAmount token_amount = 4;
 }
 
 message MessageInfo {
@@ -91,8 +94,25 @@ message MessageInfo {
     int64 target_chain_id = 3;
     bytes sender = 4;
     bytes receiver = 5;
-    bytes data = 6;
-    google.protobuf.Timestamp created = 7;
+    bytes message = 6;
+    ramp.TokenAmount token_amount = 7;
+    google.protobuf.Timestamp created = 8;
+}
+
+message TokenSwapConfig {
+   TokenSwapList token_swap_list = 1;
+}
+
+message TokenSwapList {
+    repeated TokenSwapInfo token_swap_info_list = 1;
+}
+
+message TokenSwapInfo {
+    int64 target_chain_id = 1;
+    string target_contract_address = 2;
+    string token_address = 3;
+    string origin_token = 4;
+    aelf.Hash swap_id = 5;
 }
 
 // log event
@@ -128,8 +148,9 @@ message SendRequested {
     int64 source_chain_id = 3;
     bytes receiver = 4;
     bytes sender = 5;
-    bytes data = 6;
-    int64 epoch = 7;
+    bytes message = 6;
+    ramp.TokenAmount token_amount = 7;
+    int64 epoch = 8;
 }
 
 message AdminTransferRequested {
@@ -142,4 +163,10 @@ message AdminTransferred {
     option (aelf.is_event) = true;
     aelf.Address from = 1;
     aelf.Address to = 2;
+}
+
+message TokenSwapConfigUpdated {
+    option (aelf.is_event) = true;
+    aelf.Address contract_address = 1;
+    TokenSwapList TokenSwapList = 2;
 }

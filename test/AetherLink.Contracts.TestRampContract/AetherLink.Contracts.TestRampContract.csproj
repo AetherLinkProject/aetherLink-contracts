@@ -14,6 +14,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <CommonMessage Include="..\..\protobuf\ramp_common_message.proto">
+            <Link>Protobuf\Proto\ramp_common_message.proto</Link>
+        </CommonMessage>
         <ContractCode Include="..\..\protobuf\test_ramp_contract.proto">
             <Link>Protobuf\Proto\test_ramp_contract.proto</Link>
         </ContractCode>

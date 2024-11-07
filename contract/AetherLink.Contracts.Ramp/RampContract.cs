@@ -116,4 +116,20 @@ public partial class RampContract : RampContractContainer.RampContractBase
 
         return new Empty();
     }
+
+    public override Empty SetTokenSwapConfig(TokenSwapConfig input)
+    {
+        Assert(State.RampSenders[Context.Sender] != null,
+            "The sender does not have permission to set TokenSwap config.");
+        State.TokenSwapConfigMap[Context.Sender] = input;
+
+        Context.Fire(new TokenSwapConfigUpdated
+        {
+            ContractAddress = Context.Sender,
+            TokenSwapList = input.TokenSwapList
+        });
+        return new Empty();
+    }
+
+    public override TokenSwapConfig GetTokenSwapConfig(Address sender) => State.TokenSwapConfigMap[sender];
 }
