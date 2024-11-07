@@ -38,6 +38,7 @@ service RampContract {
     // Request
     rpc Send (SendInput) returns (google.protobuf.Empty) {}
     rpc Commit (CommitInput) returns (google.protobuf.Empty) {}
+    rpc Cancel (aelf.Hash) returns (google.protobuf.Empty) {}
 }
 
 message InitializeInput {
@@ -151,6 +152,11 @@ message SendRequested {
     bytes message = 6;
     ramp.TokenAmount token_amount = 7;
     int64 epoch = 8;
+}
+
+message RequestCancelled { 
+    option (aelf.is_event) = true;
+    aelf.Hash message_id = 1;
 }
 
 message AdminTransferRequested {
