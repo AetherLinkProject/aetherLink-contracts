@@ -95,8 +95,7 @@ public partial class RampContractTests
                     TargetChainId = 1100,
                     TargetContractAddress = "ABC",
                     TokenAddress = "ABC",
-                    OriginToken = "ELF",
-                    Amount = 100
+                    OriginToken = "ELF"
                 }
             };
             var message = HashHelper.ComputeFrom(sendInput).ToByteString();
@@ -114,7 +113,6 @@ public partial class RampContractTests
                 log.TokenAmount.TargetChainId.ShouldBe(1100);
                 log.TokenAmount.TokenAddress.ShouldBe("ABC");
                 log.TokenAmount.OriginToken.ShouldBe("ELF");
-                log.TokenAmount.Amount.ShouldBe(100);
                 log.TokenAmount.TargetContractAddress.ShouldBe("ABC");
             }
         }
@@ -139,7 +137,6 @@ public partial class RampContractTests
                 TargetContractAddress = "ABC",
                 TokenAddress = "ABC",
                 OriginToken = "ELF",
-                Amount = 100
             }
         };
 

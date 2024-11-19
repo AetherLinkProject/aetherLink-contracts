@@ -121,8 +121,9 @@ public partial class RampContract : RampContractContainer.RampContractBase
     {
         Assert(State.RampSenders[Context.Sender] != null,
             "The sender does not have permission to set TokenSwap config.");
+        Assert(input != null || input.TokenSwapList != null || input.TokenSwapList.TokenSwapInfoList.Count > 0,
+            "The config cannot be null.");
         State.TokenSwapConfigMap[Context.Sender] = input;
-
         Context.Fire(new TokenSwapConfigUpdated
         {
             ContractAddress = Context.Sender,

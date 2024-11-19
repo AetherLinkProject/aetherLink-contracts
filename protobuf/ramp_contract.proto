@@ -113,7 +113,7 @@ message TokenSwapInfo {
     string target_contract_address = 2;
     string token_address = 3;
     string origin_token = 4;
-    aelf.Hash swap_id = 5;
+    string swap_id = 5;
 }
 
 // log event

@@ -236,6 +236,30 @@ public partial class OracleContract
         return new Empty();
     }
 
+    public override Empty CancelRequestsByAdmin(CancelRequestsInput input)
+    {
+        CheckInitialized();
+        CheckUnpause();
+        CheckAdminPermission();
+        Assert(input.RequestList is { Requests.Count: > 0 }, "Invalid pending canceled request list.");
+
+        foreach (var request in input.RequestList.Requests)
+        {
+            var consumer = State.Consumers[request.Consumer][request.SubscriptionId];
+            if (consumer == null) continue;
+            var coordinator = State.Coordinators[request.RequestTypeIndex];
+            if (coordinator == null) continue;
+            Context.SendInline(coordinator.CoordinatorContractAddress,
+                nameof(CoordinatorInterfaceContainer.CoordinatorInterfaceReferenceState.DeleteCommitment),
+                request.RequestId);
+            consumer.CompletedRequests = consumer.CompletedRequests.Add(1);
+
+            Context.Fire(new RequestCancelled { RequestId = request.RequestId });
+        }
+
+        return new Empty();
+    }
+
     private void ValidateCancelRequestInput(CancelRequestInput input)
     {
         Assert(input != null, "Invalid input.");

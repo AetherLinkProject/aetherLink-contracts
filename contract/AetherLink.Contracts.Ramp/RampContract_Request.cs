@@ -109,8 +109,7 @@ public partial class RampContract
         Assert(input.Signatures.Count >= (getConfigOutput.Config.N + getConfigOutput.Config.F) / 2 + 1,
             "Not enough signatures.");
 
-        var hash = HashHelper.ConcatAndCompute(HashHelper.ComputeFrom(input.Report.ToByteArray()),
-            HashHelper.ComputeFrom(input.Report.ReportContext.ToString()));
+        var hash = HashHelper.ComputeFrom(input.Report.ToByteArray());
         HashSet<Address> signed = new();
         foreach (var signature in input.Signatures)
         {

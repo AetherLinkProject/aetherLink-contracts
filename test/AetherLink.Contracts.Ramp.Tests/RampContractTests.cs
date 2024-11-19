@@ -227,22 +227,22 @@ public partial class RampContractTests : RampContractTestBase
             var tokenSwapConfigs = new TokenSwapList();
             var tonTokenSwapInfoList = new TokenSwapInfo
             {
+                SwapId = "123",
                 TargetChainId = 1100,
                 TargetContractAddress = "TON",
                 TokenAddress = "TON",
                 OriginToken = "ELFTON"
             };
-            tonTokenSwapInfoList.SwapId = HashHelper.ComputeFrom(tonTokenSwapInfoList);
             tokenSwapConfigs.TokenSwapInfoList.Add(tonTokenSwapInfoList);
 
             var evmTokenSwapInfoList = new TokenSwapInfo
             {
+                SwapId = "123",
                 TargetChainId = 100,
                 TargetContractAddress = "EVM",
                 TokenAddress = "EVM",
                 OriginToken = "ELFETH"
             };
-            evmTokenSwapInfoList.SwapId = HashHelper.ComputeFrom(evmTokenSwapInfoList);
             tokenSwapConfigs.TokenSwapInfoList.Add(evmTokenSwapInfoList);
 
             var result =
@@ -263,12 +263,12 @@ public partial class RampContractTests : RampContractTestBase
         var configs = new TokenSwapList();
         var tokenSwapInfo = new TokenSwapInfo
         {
+            SwapId = "123",
             TargetChainId = 1,
             TargetContractAddress = "ABC",
             TokenAddress = "ABC",
             OriginToken = "ELF"
         };
-        tokenSwapInfo.SwapId = HashHelper.ComputeFrom(tokenSwapInfo);
         configs.TokenSwapInfoList.Add(tokenSwapInfo);
 
         var result = await UserRampContractStub.SetTokenSwapConfig.SendWithExceptionAsync(new()
