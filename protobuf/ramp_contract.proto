@@ -143,7 +143,7 @@ message SendRequested {
     int64 target_chain_id = 2;
     int64 source_chain_id = 3;
     bytes receiver = 4;
-    bytes sender = 5;
+    aelf.Address sender = 5;
     bytes message = 6;
     ramp.TokenAmount token_amount = 7;
     int64 epoch = 8;

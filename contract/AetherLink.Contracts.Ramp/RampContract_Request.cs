@@ -45,7 +45,7 @@ public partial class RampContract
         {
             MessageId = messageId,
             TargetChainId = input.TargetChainId,
-            Sender = Context.Sender.ToByteString(),
+            Sender = Context.Sender,
             Receiver = input.Receiver,
             Message = input.Message,
             TokenAmount = input.TokenAmount,
@@ -128,7 +128,6 @@ public partial class RampContract
     {
         Assert(tokenAmount.TargetChainId > 0, "Invalid target chainId.");
         Assert(!string.IsNullOrEmpty(tokenAmount.OriginToken), "Invalid OriginToken.");
-        Assert(!string.IsNullOrEmpty(tokenAmount.TokenAddress), "Invalid TokenAddress.");
         Assert(!string.IsNullOrEmpty(tokenAmount.TargetContractAddress), "Invalid TargetContractAddress.");
     }
 }

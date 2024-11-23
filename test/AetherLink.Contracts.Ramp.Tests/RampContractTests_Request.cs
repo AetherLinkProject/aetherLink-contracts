@@ -95,7 +95,8 @@ public partial class RampContractTests
                     TargetChainId = 1100,
                     TargetContractAddress = "ABC",
                     TokenAddress = "ABC",
-                    OriginToken = "ELF"
+                    OriginToken = "ELF",
+                    Amount = 100
                 }
             };
             var message = HashHelper.ComputeFrom(sendInput).ToByteString();
@@ -114,6 +115,7 @@ public partial class RampContractTests
                 log.TokenAmount.TokenAddress.ShouldBe("ABC");
                 log.TokenAmount.OriginToken.ShouldBe("ELF");
                 log.TokenAmount.TargetContractAddress.ShouldBe("ABC");
+                log.TokenAmount.Amount.ShouldBe(100);
             }
         }
 
@@ -137,6 +139,7 @@ public partial class RampContractTests
                 TargetContractAddress = "ABC",
                 TokenAddress = "ABC",
                 OriginToken = "ELF",
+                Amount = 100
             }
         };
 
@@ -229,20 +232,6 @@ public partial class RampContractTests
                 }
             });
             result.TransactionResult.Error.ShouldContain("Invalid OriginToken.");
-        }
-
-        {
-            var result = await UserRampContractStub.Send.SendWithExceptionAsync(new()
-            {
-                TargetChainId = 1, Receiver = DefaultAddress.ToByteString(),
-                Message = HashHelper.ComputeFrom("abcdefghijklmnopqrstuvwxyz").ToByteString(),
-                TokenAmount = new()
-                {
-                    TargetChainId = 1,
-                    OriginToken = "ELFUSDT"
-                }
-            });
-            result.TransactionResult.Error.ShouldContain("Invalid TokenAddress.");
         }
 
         {
