@@ -21,7 +21,7 @@ public partial class RampContract
         // TODO: validate receiver address by chain
         Assert(input.Receiver != null && input.Receiver != ByteString.Empty, "Invalid receiver.");
         Assert(input.Message != null && input.Message != ByteString.Empty, "Can't cross chain transfer empty message.");
-        if (input.TokenAmount != null) ValidateTokenAmountInput(input.TokenAmount);
+        if (input.TokenAmount != null) ValidateTokenAmountInput(input);
 
         var messageInfo = new MessageInfo
         {
@@ -124,9 +124,11 @@ public partial class RampContract
         }
     }
 
-    private void ValidateTokenAmountInput(TokenAmount tokenAmount)
+    private void ValidateTokenAmountInput(SendInput input)
     {
-        Assert(tokenAmount.TargetChainId > 0, "Invalid target chainId.");
+        var tokenAmount = input.TokenAmount;
+        Assert(tokenAmount.TargetChainId > 0 && tokenAmount.TargetChainId == input.TargetChainId,
+            "Invalid target chainId.");
         Assert(!string.IsNullOrEmpty(tokenAmount.OriginToken), "Invalid OriginToken.");
         Assert(!string.IsNullOrEmpty(tokenAmount.TargetContractAddress), "Invalid TargetContractAddress.");
     }

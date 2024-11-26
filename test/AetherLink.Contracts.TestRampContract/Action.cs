@@ -10,7 +10,7 @@ public class TestRampContract : TestRampContractContainer.TestRampContractBase
         return new Empty();
     }
 
-    public override RateLimiterTokenBucket GetCurrentTokenSwapBucketState(Hash input)
+    public override RateLimiterTokenBucket GetCurrentTokenSwapBucketState(GetCurrentTokenSwapBucketStateInput input)
     {
         return new RateLimiterTokenBucket();
     }

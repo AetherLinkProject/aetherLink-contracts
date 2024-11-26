@@ -33,7 +33,7 @@ public partial class RampContractTests
                 log.Epoch.ShouldBe(0);
                 log.TargetChainId.ShouldBe(1);
                 log.Receiver.ShouldBe(UserAddress.ToByteString());
-                log.Sender.ShouldBe(UserAddress.ToByteString());
+                log.Sender.ShouldBe(UserAddress);
             }
         }
 
@@ -88,7 +88,7 @@ public partial class RampContractTests
         {
             var sendInput = new SendInput
             {
-                TargetChainId = 1,
+                TargetChainId = 1100,
                 Receiver = UserAddress.ToByteString(),
                 TokenAmount = new()
                 {
@@ -108,9 +108,9 @@ public partial class RampContractTests
                 var log = GetLogEvent<SendRequested>(result.TransactionResult);
                 log.Message.ShouldBe(message);
                 log.Epoch.ShouldBe(0);
-                log.TargetChainId.ShouldBe(1);
+                log.TargetChainId.ShouldBe(1100);
                 log.Receiver.ShouldBe(UserAddress.ToByteString());
-                log.Sender.ShouldBe(UserAddress.ToByteString());
+                log.Sender.ShouldBe(UserAddress);
                 log.TokenAmount.TargetChainId.ShouldBe(1100);
                 log.TokenAmount.TokenAddress.ShouldBe("ABC");
                 log.TokenAmount.OriginToken.ShouldBe("ELF");
@@ -215,6 +215,19 @@ public partial class RampContractTests
                 TokenAmount = new()
                 {
                     TargetChainId = 0
+                }
+            });
+            result.TransactionResult.Error.ShouldContain("Invalid target chainId.");
+        }
+        
+        {
+            var result = await UserRampContractStub.Send.SendWithExceptionAsync(new()
+            {
+                TargetChainId = 1, Receiver = DefaultAddress.ToByteString(),
+                Message = HashHelper.ComputeFrom("abcdefghijklmnopqrstuvwxyz").ToByteString(),
+                TokenAmount = new()
+                {
+                    TargetChainId = 11
                 }
             });
             result.TransactionResult.Error.ShouldContain("Invalid target chainId.");
