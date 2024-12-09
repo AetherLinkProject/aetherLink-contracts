@@ -39,8 +39,7 @@ public partial class RampContractTests
 
     private ByteString GenerateSignature(byte[] privateKey, CommitInput input)
     {
-        var hash = HashHelper.ConcatAndCompute(HashHelper.ComputeFrom(input.Report.ToByteArray()),
-            HashHelper.ComputeFrom(input.Report.ReportContext.ToString()));
+        var hash = HashHelper.ComputeFrom(input.Report.ToByteArray());
         var signature = CryptoHelper.SignWithPrivateKey(privateKey, hash.ToByteArray());
         return ByteStringHelper.FromHexString(signature.ToHex());
     }
