@@ -58,6 +58,7 @@ service OracleContract {
     rpc Fulfill (FulfillInput) returns (google.protobuf.Empty) {}
     rpc Transmit (TransmitInput) returns (google.protobuf.Empty) {}
     rpc CancelRequest (CancelRequestInput) returns (google.protobuf.Empty) {}
+    rpc CancelRequestsByAdmin (CancelRequestsInput) returns (google.protobuf.Empty) {}
     
     // View
     rpc GetAdmin(google.protobuf.Empty) returns (aelf.Address) { option (aelf.is_view) = true; }
@@ -179,6 +180,21 @@ message TransmitInput {
 }
 
 message CancelRequestInput {
+    aelf.Hash request_id = 1;
+    int64 subscription_id = 2;
+    aelf.Address consumer = 3;
+    int32 request_type_index = 4;
+}
+
+message CancelRequestsInput {
+    PendingCanceledRequestList request_list = 1;
+}
+
+message PendingCanceledRequestList {
+    repeated PendingCanceledRequest requests = 1;
+}
+
+message PendingCanceledRequest {
     aelf.Hash request_id = 1;
     int64 subscription_id = 2;
     aelf.Address consumer = 3;
