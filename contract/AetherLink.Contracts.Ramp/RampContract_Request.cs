@@ -88,6 +88,32 @@ public partial class RampContract
         return new Empty();
     }
 
+    public override Empty Cancel(Hash input)
+    {
+        CheckInitialized();
+        CheckAdminPermission();
+        Assert(IsHashValid(input) && State.MessageInfoMap[input] != null, "This message id is invalid.");
+
+        Context.Fire(new RequestCancelled { MessageId = input });
+        return new Empty();
+    }
+
+    public override Empty BatchManuallyExecute(ManuallyExecuteRequestsInput input)
+    {
+        CheckInitialized();
+        CheckAdminPermission();
+        Assert(input.RequestList is { Requests.Count: > 0 }, "Invalid manually execute request list.");
+
+        foreach (var messageId in input.RequestList.Requests)
+        {
+            Assert(IsHashValid(messageId) && State.MessageInfoMap[messageId] != null,
+                $"This message id {messageId} is invalid.");
+            Context.Fire(new RequestManuallyExecuted { MessageId = messageId });
+        }
+
+        return new Empty();
+    }
+
     private void VerifyReportContext(ReportContext context)
     {
         Assert(context != null, "Invalid report context.");
