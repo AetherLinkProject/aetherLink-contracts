@@ -229,7 +229,7 @@ public partial class RampContractTests : RampContractTestBase
             {
                 TargetChainId = 1100,
                 Receiver = "TON",
-                TokenAddress = "TON",
+                TokenAddress = "ton",
                 Symbol = "ELFTON",
                 ExtraData = ByteString.Empty
             };
@@ -239,7 +239,7 @@ public partial class RampContractTests : RampContractTestBase
             {
                 TargetChainId = 100,
                 Receiver = "EVM",
-                TokenAddress = "EVM",
+                TokenAddress = "evm",
                 Symbol = "ELFETH",
                 ExtraData = ByteString.Empty
             };

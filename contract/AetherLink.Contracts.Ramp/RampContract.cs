@@ -1,3 +1,4 @@
+using System.Linq;
 using AElf;
 using AElf.Sdk.CSharp;
 using AElf.Types;
@@ -123,11 +124,25 @@ public partial class RampContract : RampContractContainer.RampContractBase
             "The sender does not have permission to set TokenSwap config.");
         Assert(input is { TokenSwapList: { } } && input.TokenSwapList.TokenSwapInfoList.Count > 0,
             "The config cannot be null.");
-        State.TokenSwapConfigMap[Context.Sender] = input;
+
+        var newTokenSwapList = new TokenSwapList();
+        newTokenSwapList.TokenSwapInfoList.AddRange(input.TokenSwapList.TokenSwapInfoList
+            .Select(swapInfo => new TokenSwapInfo
+            {
+                TargetChainId = swapInfo.TargetChainId,
+                SourceChainId = swapInfo.SourceChainId,
+                Receiver = swapInfo.Receiver,
+                TokenAddress = swapInfo.TokenAddress.ToLower(),
+                Symbol = swapInfo.Symbol,
+                ExtraData = swapInfo.ExtraData
+            }).ToList());
+        var newInput = new TokenSwapConfig { TokenSwapList = newTokenSwapList };
+
+        State.TokenSwapConfigMap[Context.Sender] = newInput;
         Context.Fire(new TokenSwapConfigUpdated
         {
             ContractAddress = Context.Sender,
-            TokenSwapList = input.TokenSwapList
+            TokenSwapList = newTokenSwapList
         });
         return new Empty();
     }
