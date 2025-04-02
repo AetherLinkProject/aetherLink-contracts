@@ -90,12 +90,11 @@ public partial class RampContractTests
             {
                 TargetChainId = 1100,
                 Receiver = UserAddress.ToByteString(),
-                TokenAmount = new()
+                TokenTransferMetadata = new()
                 {
                     TargetChainId = 1100,
-                    TargetContractAddress = "ABC",
                     TokenAddress = "ABC",
-                    OriginToken = "ELF",
+                    Symbol = "ELF",
                     Amount = 100
                 }
             };
@@ -111,11 +110,10 @@ public partial class RampContractTests
                 log.TargetChainId.ShouldBe(1100);
                 log.Receiver.ShouldBe(UserAddress.ToByteString());
                 log.Sender.ShouldBe(UserAddress);
-                log.TokenAmount.TargetChainId.ShouldBe(1100);
-                log.TokenAmount.TokenAddress.ShouldBe("ABC");
-                log.TokenAmount.OriginToken.ShouldBe("ELF");
-                log.TokenAmount.TargetContractAddress.ShouldBe("ABC");
-                log.TokenAmount.Amount.ShouldBe(100);
+                log.TokenTransferMetadata.TargetChainId.ShouldBe(1100);
+                log.TokenTransferMetadata.TokenAddress.ShouldBe("ABC");
+                log.TokenTransferMetadata.Symbol.ShouldBe("ELF");
+                log.TokenTransferMetadata.Amount.ShouldBe(100);
             }
         }
 
@@ -132,14 +130,13 @@ public partial class RampContractTests
                 Receiver = TestRampContractAddress.ToByteString()
             },
             Message = messageData,
-            TokenAmount = new()
+            TokenTransferMetadata = new()
             {
-                SwapId = "AAAA",
                 TargetChainId = 1100,
-                TargetContractAddress = "ABC",
                 TokenAddress = "ABC",
-                OriginToken = "ELF",
-                Amount = 100
+                Symbol = "ELF",
+                Amount = 100,
+                ExtraData = ByteString.Empty
             }
         };
 
@@ -212,20 +209,20 @@ public partial class RampContractTests
             {
                 TargetChainId = 1, Receiver = DefaultAddress.ToByteString(),
                 Message = HashHelper.ComputeFrom("abcdefghijklmnopqrstuvwxyz").ToByteString(),
-                TokenAmount = new()
+                TokenTransferMetadata = new()
                 {
                     TargetChainId = 0
                 }
             });
             result.TransactionResult.Error.ShouldContain("Invalid target chainId.");
         }
-        
+
         {
             var result = await UserRampContractStub.Send.SendWithExceptionAsync(new()
             {
                 TargetChainId = 1, Receiver = DefaultAddress.ToByteString(),
                 Message = HashHelper.ComputeFrom("abcdefghijklmnopqrstuvwxyz").ToByteString(),
-                TokenAmount = new()
+                TokenTransferMetadata = new()
                 {
                     TargetChainId = 11
                 }
@@ -238,28 +235,13 @@ public partial class RampContractTests
             {
                 TargetChainId = 1, Receiver = DefaultAddress.ToByteString(),
                 Message = HashHelper.ComputeFrom("abcdefghijklmnopqrstuvwxyz").ToByteString(),
-                TokenAmount = new()
+                TokenTransferMetadata = new()
                 {
                     TargetChainId = 1,
-                    OriginToken = ""
+                    Symbol = ""
                 }
             });
-            result.TransactionResult.Error.ShouldContain("Invalid OriginToken.");
-        }
-
-        {
-            var result = await UserRampContractStub.Send.SendWithExceptionAsync(new()
-            {
-                TargetChainId = 1, Receiver = DefaultAddress.ToByteString(),
-                Message = HashHelper.ComputeFrom("abcdefghijklmnopqrstuvwxyz").ToByteString(),
-                TokenAmount = new()
-                {
-                    TargetChainId = 1,
-                    OriginToken = "ELFUSDT",
-                    TokenAddress = "ABC"
-                }
-            });
-            result.TransactionResult.Error.ShouldContain("Invalid TargetContractAddress.");
+            result.TransactionResult.Error.ShouldContain("Invalid Symbol.");
         }
     }
 

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using AElf;
 using AElf.Types;
+using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using Shouldly;
 using Xunit;
@@ -227,21 +227,21 @@ public partial class RampContractTests : RampContractTestBase
             var tokenSwapConfigs = new TokenSwapList();
             var tonTokenSwapInfoList = new TokenSwapInfo
             {
-                SwapId = "123",
                 TargetChainId = 1100,
-                TargetContractAddress = "TON",
-                TokenAddress = "TON",
-                OriginToken = "ELFTON"
+                Receiver = "TON",
+                TokenAddress = "ton",
+                Symbol = "ELFTON",
+                ExtraData = ByteString.Empty
             };
             tokenSwapConfigs.TokenSwapInfoList.Add(tonTokenSwapInfoList);
 
             var evmTokenSwapInfoList = new TokenSwapInfo
             {
-                SwapId = "123",
                 TargetChainId = 100,
-                TargetContractAddress = "EVM",
-                TokenAddress = "EVM",
-                OriginToken = "ELFETH"
+                Receiver = "EVM",
+                TokenAddress = "evm",
+                Symbol = "ELFETH",
+                ExtraData = ByteString.Empty
             };
             tokenSwapConfigs.TokenSwapInfoList.Add(evmTokenSwapInfoList);
 
@@ -263,11 +263,11 @@ public partial class RampContractTests : RampContractTestBase
         var configs = new TokenSwapList();
         var tokenSwapInfo = new TokenSwapInfo
         {
-            SwapId = "123",
             TargetChainId = 1,
-            TargetContractAddress = "ABC",
+            Receiver = "ABC",
             TokenAddress = "ABC",
-            OriginToken = "ELF"
+            Symbol = "ELF",
+            ExtraData = ByteString.Empty
         };
         configs.TokenSwapInfoList.Add(tokenSwapInfo);
 

@@ -10,4 +10,5 @@ public partial class RampContract
     public override RampSenderInfo GetRampSender(Address senderAddress) => State.RampSenders[senderAddress];
     public override Address GetOracleContractAddress(Empty input) => State.OracleContract.Value;
     public override Int64Value GetLatestEpoch(Empty input) => new() { Value = State.LatestEpoch.Value };
+    public override Hash GetMessageMetaData(Hash messageId) => State.ReceivedMessageInfoMap[messageId];
 }

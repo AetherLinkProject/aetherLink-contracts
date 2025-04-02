@@ -7,6 +7,7 @@ public class TestRampContract : TestRampContractContainer.TestRampContractBase
 {
     public override Empty ForwardMessage(ForwardMessageInput input)
     {
+        var addr = Address.Parser.ParseFrom(input.Receiver);
         return new Empty();
     }
 

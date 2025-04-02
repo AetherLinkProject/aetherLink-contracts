@@ -21,7 +21,7 @@ public partial class RampContract
         // TODO: validate receiver address by chain
         Assert(input.Receiver != null && input.Receiver != ByteString.Empty, "Invalid receiver.");
         Assert(input.Message != null && input.Message != ByteString.Empty, "Can't cross chain transfer empty message.");
-        if (input.TokenAmount != null) ValidateTokenAmountInput(input);
+        if (input.TokenTransferMetadata != null) ValidateTokenAmountInput(input);
 
         var messageInfo = new MessageInfo
         {
@@ -30,7 +30,7 @@ public partial class RampContract
             Sender = Context.Sender.ToByteString(),
             Receiver = input.Receiver,
             Message = input.Message,
-            TokenAmount = input.TokenAmount,
+            TokenTransferMetadata = input.TokenTransferMetadata,
             Created = Context.CurrentBlockTime
         };
         var messageId = HashHelper.ComputeFrom(messageInfo);
@@ -48,7 +48,7 @@ public partial class RampContract
             Sender = Context.Sender,
             Receiver = input.Receiver,
             Message = input.Message,
-            TokenAmount = input.TokenAmount,
+            TokenTransferMetadata = input.TokenTransferMetadata,
             Epoch = latestEpoch
         });
 
@@ -78,7 +78,7 @@ public partial class RampContract
                 Sender = reportContext.Sender,
                 Receiver = reportContext.Receiver,
                 Message = input.Report.Message,
-                TokenAmount = input.Report.TokenAmount
+                TokenTransferMetadata = input.Report.TokenTransferMetadata
             });
 
         State.ReceivedMessageInfoMap[messageId] = HashHelper.ComputeFrom(input);
@@ -152,10 +152,9 @@ public partial class RampContract
 
     private void ValidateTokenAmountInput(SendInput input)
     {
-        var tokenAmount = input.TokenAmount;
+        var tokenAmount = input.TokenTransferMetadata;
         Assert(tokenAmount.TargetChainId > 0 && tokenAmount.TargetChainId == input.TargetChainId,
             "Invalid target chainId.");
-        Assert(!string.IsNullOrEmpty(tokenAmount.OriginToken), "Invalid OriginToken.");
-        Assert(!string.IsNullOrEmpty(tokenAmount.TargetContractAddress), "Invalid TargetContractAddress.");
+        Assert(!string.IsNullOrEmpty(tokenAmount.Symbol), "Invalid symbol.");
     }
 }
