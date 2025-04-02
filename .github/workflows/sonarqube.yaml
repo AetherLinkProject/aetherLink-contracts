@@ -38,7 +38,7 @@ jobs:
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
       - name: Begin SonarQube analysis
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"aetherLink-contracts.aelf" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"aetherLink-contracts" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           bash scripts/download_binary.sh
           bash scripts/install.sh
           dotnet restore --verbosity quiet
