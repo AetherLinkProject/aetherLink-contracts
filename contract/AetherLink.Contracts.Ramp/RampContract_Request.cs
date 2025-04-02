@@ -155,6 +155,6 @@ public partial class RampContract
         var tokenAmount = input.TokenTransferMetadata;
         Assert(tokenAmount.TargetChainId > 0 && tokenAmount.TargetChainId == input.TargetChainId,
             "Invalid target chainId.");
-        Assert(!string.IsNullOrEmpty(tokenAmount.Symbol), "Invalid OriginToken.");
+        Assert(!string.IsNullOrEmpty(tokenAmount.Symbol), "Invalid symbol.");
     }
 }

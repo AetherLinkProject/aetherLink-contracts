@@ -241,7 +241,7 @@ public partial class RampContractTests
                     Symbol = ""
                 }
             });
-            result.TransactionResult.Error.ShouldContain("Invalid OriginToken.");
+            result.TransactionResult.Error.ShouldContain("Invalid Symbol.");
         }
     }
 
