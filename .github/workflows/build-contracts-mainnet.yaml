@@ -1,0 +1,188 @@
+name: Build Contracts Mainnet
+
+on:
+  workflow_dispatch:
+    inputs:
+      projectName:
+        description: 'Enter Project Name'
+        required: true
+        default: 'aetherLink-contracts'
+      contractName:
+        description: 'Enter Contract Name'
+        required: true
+        default: 'All'
+        type: choice
+        options:
+          - 'AetherLink.Contracts.Automation'
+          - 'AetherLink.Contracts.Consumer'
+          - 'AetherLink.Contracts.DataFeeds.Coordinator'
+          - 'AetherLink.Contracts.Oracle'
+          - 'AetherLink.Contracts.Ramp'
+          - 'AetherLink.Contracts.VRF.Coordinator'
+          - 'All'
+      version:
+        description: 'Enter Contract Version'
+        required: true
+        default: '1.0.0'
+      netsdk:
+        description: 'Select .NET SDK Version'
+        required: true
+        default: '6.0'
+        type: choice
+        options:
+          - '6.0'
+          - '8.0'
+          - '9.0'
+      sln:
+        description: 'Enter Solution File (.sln)'
+        required: true
+        default: 'AetherLink.Contracts.sln'
+
+env:
+  DOTNET_INSTALL_DIR: "./.dotnet"
+
+concurrency:
+  group: workflow-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  prepare-matrix:
+    runs-on: aetherlink-server-runner
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Generate Dynamic Matrix
+        id: set-matrix
+        run: |
+          if [[ "${{ github.event.inputs.contractName }}" == "All" ]]; then
+            echo "[\"AIMining\"]" > matrix.json
+          else
+            echo "[\"${{ github.event.inputs.contractName }}\"]" > matrix.json
+          fi
+          echo "matrix=$(cat matrix.json)" >> $GITHUB_OUTPUT
+  
+  build-contract:
+    runs-on: aetherlink-server-runner
+    needs: prepare-matrix
+    strategy:
+      matrix:
+        contractName: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+
+    steps:
+      - name: Debug Matrix Inputs
+        run: |
+          echo "The contract name from matrix is: ${{ matrix.contractName }}"
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Set Variables
+        run: |
+          PROJECT_NAME="${{ github.event.inputs.projectName }}"
+          CONTRACT_NAME="${{ matrix.contractName }}"
+          VERSION="${{ github.event.inputs.version }}"
+          NETSDK="${{ github.event.inputs.netsdk }}"
+          SLN="${{ github.event.inputs.sln }}"
+          HOME_DIR="${{ github.workspace }}/contracts_auto_build/${PROJECT_NAME}/${{ matrix.contractName }}"
+          
+          case "${NETSDK}" in
+            "9.0")
+              IMAGE_NAME="aelf/build-contracts:dotnet-sdk-9.0-noble-amd64"
+              ;;
+            "8.0")
+              IMAGE_NAME="aelf/build-contracts:dotnet-sdk-8.0.204-amd64"
+              ;;
+            "6.0")
+              IMAGE_NAME="aelf/build-contracts:dotnet-sdk-6.0.413-jammy-amd64"
+              ;;
+            *)
+              echo "Error: Unsupported .NET SDK version selected."
+              exit 1
+              ;;
+          esac
+          
+          echo "PROJECT_NAME=${PROJECT_NAME}" >> $GITHUB_ENV
+          echo "CONTRACT_NAME=${CONTRACT_NAME}" >> $GITHUB_ENV
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
+          echo "SLN=${SLN}" >> $GITHUB_ENV
+          echo "HOME_DIR=${HOME_DIR}" >> $GITHUB_ENV
+
+      - name: Build Selected Contract(s)
+        run: |
+          # Check if HOME_DIR is set
+          if [ -z "${{ env.HOME_DIR }}"]; then
+            echo "HOME_DIR environment variable is not set"
+            exit 1
+          fi
+
+          # Create build directory if it doesn't exist
+          if [ ! -d "${{ env.HOME_DIR }}/build" ]; then
+            mkdir -p "${{ env.HOME_DIR }}/build"
+          fi
+          
+          # Create contracts directory if it doesn't exist
+          if [ ! -d "${{ env.HOME_DIR }}/contracts" ]; then
+            mkdir -p "${{ env.HOME_DIR }}/contracts"
+          fi
+          
+          echo "Copying contracts for ${{ env.HOME_DIR }}/contracts/"
+
+          for item in *; do
+            if [ "$item" != "contracts_auto_build" ] && [ "$item" != "$(basename "${HOME_DIR}/contracts/")" ]; then
+                cp -r "$item" "${HOME_DIR}/contracts/"
+            fi
+          done
+          
+          echo "Copying build.sh to ${{ env.HOME_DIR }}/build.sh"
+
+          if [ -f "build.sh" ]; then
+            cp build.sh "${{ env.HOME_DIR }}/build.sh"
+          else
+            echo "build.sh not found in the current directory."
+            exit 1
+          fi
+
+      - name: Build Contract
+        run: |
+          echo "Building contract: ${{ matrix.contractName }}"
+          cd ${{ env.HOME_DIR }}
+          docker run --rm --name build-contracts \
+            -e USER=root \
+            -v ${{ env.HOME_DIR }}/contracts:/opt/contracts \
+            -v ${{ env.HOME_DIR }}/build:/opt/build \
+            -v ${{ env.HOME_DIR }}/build.sh:/opt/build.sh \
+            ${{ env.IMAGE_NAME }} /bin/bash -x /opt/build.sh \
+            ${{ matrix.contractName }} ${{ env.VERSION }} ${{ env.SLN }}
+
+      - name: Archive Build Contract
+        run: |
+          cd ${{ env.HOME_DIR }}
+          tar cfz ${{ matrix.contractName }}.${{ env.VERSION }}.tgz -C build .
+
+      - name: Upload build contract
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.contractName }}-contract
+          path: ${{ env.HOME_DIR }}/${{ matrix.contractName }}.${{ env.VERSION }}.tgz
+          retention-days: 7
+
+      - name:  Lark Notification on Success
+        if: success()
+        uses: drayeasy/action-lark-notify@main
+        env:
+          LARK_WEBHOOK: ${{ secrets.LARK_WEBHOOK }}
+          LARK_MESSAGE_TITLE: "Published successfully"
+
+      - name:  Lark Notification on Failure
+        if: failure()
+        uses: drayeasy/action-lark-notify@main
+        env:
+          LARK_WEBHOOK: ${{ secrets.LARK_WEBHOOK }}
+          LARK_MESSAGE_TITLE: "Publishing failed"
+          LARK_MESSAGE_TEMPLATE: "red"
