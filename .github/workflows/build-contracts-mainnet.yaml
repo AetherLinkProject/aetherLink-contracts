@@ -55,7 +55,7 @@ jobs:
         id: set-matrix
         run: |
           if [[ "${{ github.event.inputs.contractName }}" == "All" ]]; then
-            echo "[\"AIMining\"]" > matrix.json
+            echo "[\"AetherLink.Contracts.Automation\",\"AetherLink.Contracts.Consumer\",\"AetherLink.Contracts.DataFeeds.Coordinator\",\"AetherLink.Contracts.Oracle\",\"AetherLink.Contracts.Ramp\",\"AetherLink.Contracts.VRF.Coordinator\"]" > matrix.json
           else
             echo "[\"${{ github.event.inputs.contractName }}\"]" > matrix.json
           fi
@@ -79,7 +79,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '6.0.x'
 
       - name: Set Variables
         run: |
