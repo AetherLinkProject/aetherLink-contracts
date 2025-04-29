@@ -20,9 +20,10 @@
 |------|------------------------------|--------|----------|-------------------------------|-----------------------|----------|--------------------------------------------|
 | F001 | Oracle                       | ✅     | High     | feature/oracle                | -                     | 87.96%     | On-chain oracle and data aggregation      |
 | F002 | DataFeeds Coordinator        | ✅     | High     | feature/datafeeds             | -                     | 97.89%     | Data price feeds and aggregation          |
-| F003 | Ramp                        | ✅     | Medium   | feature/ramp                  | -                     | 80.53%     | Off-chain/on-chain asset bridge           |
-| F004 | VRF Coordinator              | ✅     | Medium   | feature/vrf                   | -                     | 98.10%     | Verifiable random function                |
-| F005 | Consumer                     | ✅     | Medium   | feature/consumer              | -                     | 94.37%     | Data/asset consumer contract              |
+| F003 | VRF Coordinator              | ✅     | Medium   | feature/vrf                   | -                     | 98.10%     | Verifiable random function                |
+| F004 | Consumer                     | ✅     | Medium   | feature/consumer              | -                     | 94.37%     | Data/asset consumer contract              |
+| F005 | Ramp                        | ✅     | Medium   | feature/ramp                  | -                     | 80.53%     | Off-chain/on-chain asset bridge           |
+
 
 ## Development Metrics
 
