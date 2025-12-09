@@ -1,0 +1,15 @@
+// the version of the language, use proto3 for contracts
+syntax = "proto3";
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "acs12.proto";
+import "ramp_interface.proto";
+
+option csharp_namespace = "AetherLink.Contracts.TestRampContract";
+
+service TestRampContract {
+  option (aelf.base) = "acs12.proto";
+  option (aelf.base) = "ramp_interface.proto";
+  option (aelf.csharp_state) = "AetherLink.Contracts.TestRampContract.TestRampContractState";
+}

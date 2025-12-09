@@ -1,0 +1,17 @@
+// the version of the language, use proto3 for contracts
+syntax = "proto3";
+
+package upkeep;
+
+// some core imports for AElf chain types
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "upkeep_interface.proto";
+
+option csharp_namespace = "AetherLink.Contracts.Automation.Upkeep";
+
+// the contract definition: a gRPC service definition.
+service UpkeepContract {
+    option (aelf.base) = "upkeep_interface.proto";
+    option (aelf.csharp_state) = "AetherLink.Contracts.Automation.Upkeep.UpkeepContractState";
+}
